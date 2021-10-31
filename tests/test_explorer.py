@@ -1,6 +1,27 @@
 import pytest
 import blockexplorer.explorer as exp
 
+blockinfo = [
+    ('hash',  '000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f'),
+    ('ver', 1),
+    ('prev_block', '0000000000000000000000000000000000000000000000000000000000000000'),
+    ('mrkl_root', '4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b'),
+    ('time', 1231006505),
+    ('bits', 486604799),
+    ('next_block', ['00000000839a8e6886ab5951d76f411475428afc90947ee320161bbf18eb6048']),
+    ('fee', 0),
+    ('nonce', 2083236893),
+    ('n_tx', 1,),
+    ('size', 285),
+    ('block_index', 0),
+    ('main_chain', True),
+    ('height', 0),
+    ('weight', 1140)
+]
 
-def test_setting_name():
-    exp.get_by_block(0)
+
+@pytest.mark.parametrize("key, value", blockinfo)
+def test_setting_name(key, value):
+    block = exp.get_by_block(0)
+    print(value)
+    assert block[key] == value
