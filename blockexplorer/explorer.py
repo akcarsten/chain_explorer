@@ -8,6 +8,7 @@ Block Explorer offers functions to retrieve information about blocks on the Bitc
 
 import requests
 import codecs
+from typing import Tuple
 
 
 def get_by_block(block: int) -> dict:
@@ -17,7 +18,7 @@ def get_by_block(block: int) -> dict:
         block: block number of interest
 
     Returns:
-        Dictionary with the block data
+        dict: block data
 
     """
 
@@ -33,10 +34,33 @@ def get_by_hash(block_hash: str) -> dict:
         block_hash: block hash of interest
 
     Returns:
-        Dictionary with the block data
+        dict: block data
 
     """
 
     url = 'https://blockchain.info/rawblock/'
 
     return requests.get(url + block_hash).json()
+
+
+def collect_messages(raw_block: dict) -> Tuple[list, list]:
+    """Function to collect all input and output messages into two lists.
+
+    Args:
+        raw_block: Block information as dictionary retrieved by either 'get_by_block' or 'get_by_hash'
+
+    Returns:
+        tuple: with the input and output messages as lists
+
+    """
+
+    input_msg = []
+    output_msg = []
+    for i in raw_block['tx']:
+        for output in i['out']:
+            output_msg.append(output['script'])
+
+        for inputs in i['inputs']:
+            input_msg.append(inputs['script'])
+
+    return input_msg, output_msg
