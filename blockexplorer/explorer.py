@@ -11,20 +11,20 @@ from typing import Tuple
 from typing import Union
 
 
-def get_by_block(block: int) -> dict:
+def get_by_block(block_number: int) -> dict:
     """Function to retrieve all data from a specified block of the Bitcoin blockchain y providing the block number.
 
     Args:
-        block: block number of interest
+        block_number: block number of interest
 
     Returns:
-        dict: block data
+        dict: raw block data
 
     """
 
     url = 'https://blockchain.info/block-height/'
 
-    return requests.get(url + str(block) + "?format=json").json()['blocks'][0]
+    return requests.get(url + str(block_number) + "?format=json").json()['blocks'][0]
 
 
 def get_by_hash(block_hash: str) -> dict:
@@ -34,7 +34,7 @@ def get_by_hash(block_hash: str) -> dict:
         block_hash: block hash of interest
 
     Returns:
-        dict: block data
+        dict: raw block data
 
     """
 
@@ -89,3 +89,18 @@ def decode_hex_message(msg: Union[str, list]) -> list:
         decoded_msg.append(bytes.fromhex(message).decode('utf-8', errors='ignore'))
 
     return decoded_msg
+
+
+def show_block_info(raw_block: dict) -> None:
+    """Function to show the blocj information in the console.
+
+    Args:
+        raw_block: Block information as dictionary retrieved by either 'get_by_block' or 'get_by_hash'
+
+    """
+
+    print('Block information:')
+
+    for key in raw_block.keys():
+        if key != 'tx':
+            print(key + ': ' + str(raw_block[key]))
