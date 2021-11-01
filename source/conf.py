@@ -42,6 +42,7 @@ extensions = [
     'sphinx.ext.autodoc.typehints',
 ]
 
+add_module_names = False
 autodoc_typehints = 'description'
 
 # Add any paths that contain templates here, relative to this directory.
