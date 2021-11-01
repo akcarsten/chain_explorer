@@ -86,6 +86,6 @@ def decode_hex_message(msg: Union[str, list]) -> list:
 
     decoded_msg = []
     for message in msg:
-        decoded_msg.append(bytes.fromhex(message).decode("ascii"))
+        decoded_msg.append(bytes.fromhex(message).decode('utf-8', errors='ignore'))
 
     return decoded_msg
