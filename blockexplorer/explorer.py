@@ -7,8 +7,8 @@ Block Explorer offers functions to retrieve information about blocks on the Bitc
 """
 
 import requests
-import codecs
 from typing import Tuple
+from typing import Union
 
 
 def get_by_block(block: int) -> dict:
@@ -64,3 +64,28 @@ def collect_messages(raw_block: dict) -> Tuple[list, list]:
             input_msg.append(inputs['script'])
 
     return input_msg, output_msg
+
+
+def decode_hex_message(msg: Union[str, list]) -> list:
+    """Function to decode hexadecimal messages to ASCII code.
+
+    Args:
+        msg: hexadecimal message either as a string or a list of strings.
+
+    Returns:
+        list: decoded hexadecimal input messages
+
+    Examples:
+        >>> decode_hex_message('5361746f736869')
+        ['Satoshi']
+
+    """
+
+    if type(msg) == str:
+        msg = [msg]
+
+    decoded_msg = []
+    for message in msg:
+        decoded_msg.append(bytes.fromhex(message).decode("ascii"))
+
+    return decoded_msg

@@ -18,6 +18,11 @@ blockinfo = [
     ('height', 0),
     ('weight', 1140)]
 
+messages = [
+    ('54686973206973206a75737420612074657374', ['This is just a test']),
+    (['5361746f736869', '4e616b616d6f746f'], ['Satoshi', 'Nakamoto'])
+]
+
 
 @pytest.mark.parametrize("key, value", blockinfo)
 def test_get_by_block(key, value):
@@ -43,3 +48,8 @@ def test_collect_messages():
     assert msgs[0][0].find('d65732030332f4a616e2f323030') == 29
     assert msgs[1][0].find('130b7105cd6a828e03909a67962') == 29
 
+
+@pytest.mark.parametrize("key, value", messages)
+def test_decode_hex_message(key, value):
+
+    assert exp.decode_hex_message(key) == value
