@@ -92,7 +92,7 @@ def decode_hex_message(msg: Union[str, list]) -> list:
 
 
 def show_block_info(raw_block: dict) -> None:
-    """Function to show the blocj information in the console.
+    """Function to show the block information in the console.
 
     Args:
         raw_block: Block information as dictionary retrieved by either 'get_by_block' or 'get_by_hash'
@@ -104,3 +104,21 @@ def show_block_info(raw_block: dict) -> None:
     for key in raw_block.keys():
         if key != 'tx':
             print(key + ': ' + str(raw_block[key]))
+
+
+def get_transaction(tx_hash):
+    """Function to retrieve all data from a specified transaction of
+    the Bitcoin blockchain by providing the transaction hash.
+
+    Args:
+        tx_hash: transaction hash of interest
+
+    Returns:
+        dict: raw transaction data
+
+    """
+
+    url = 'https://blockchain.info/rawtx/'
+
+    return requests.get(url + tx_hash).json()
+
