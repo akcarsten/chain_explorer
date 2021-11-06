@@ -89,3 +89,12 @@ def test_get_transaction(key, value):
     tx = exp.get_transaction(transaction[0][1])
 
     assert tx[key] == value
+
+
+@patch('builtins.print')
+def test_show_transaction_info(mock_print):
+
+    raw_tx = exp.get_transaction('6c53cd987119ef797d5adccd76241247988a0a5ef783572a9972e7371c5fb0cc')
+    exp.show_transaction_info(raw_tx)
+
+    mock_print.assert_called_with('fee: 297401')

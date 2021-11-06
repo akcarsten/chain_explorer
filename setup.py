@@ -5,7 +5,7 @@ setup(
     version='0.0',
     packages=find_packages(exclude=['tests*']),
     license='none',
-    description='Quickly retrieve and explore Bitcpoin blocks',
+    description='Quickly retrieve and explore Bitcoin blocks',
     long_description=open('README.md').read(),
     install_requires=[],
     url='REPOSITORY_URL',
