@@ -6,6 +6,7 @@ __pycache__/
 *$py.class
 *.ipynb
 *._
+*.pdf
 
 # C extensions
 *.so

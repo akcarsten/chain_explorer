@@ -43,8 +43,6 @@ for output in raw_tx['out']:
         pdf = pdf + output['script'][cur:cur + 130]
     n +=1
 
-codecs.decode(pdf[20:-120], 'hex')
-
 f = open("bitcoin.pdf", "wb")
 f.write(codecs.decode(pdf[16:-112], 'hex'))
 f.close()
