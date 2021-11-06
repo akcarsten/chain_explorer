@@ -106,3 +106,7 @@ def test_collect_uploaded_data():
     data = exp.collect_uploaded_data(raw_tx)
     
     assert data.endswith("f1888ac147922cbce6b2c1206c687f486ed7afa55e73ea01488ac")
+
+
+def test_download_data():
+    False

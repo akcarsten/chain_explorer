@@ -183,7 +183,7 @@ def decode_hex_message(msg: Union[str, list]) -> list:
     return decoded_msg
 
 
-def collect_uploaded_data(raw_tx: dict) -> str :
+def collect_uploaded_data(raw_tx: dict) -> str:
     """Function to format and collect all outputs from a ransaction that contains
     data uploaded via the Satoshi upload tool.
 
@@ -205,3 +205,21 @@ def collect_uploaded_data(raw_tx: dict) -> str :
         data = data + output['script'][cur:cur + 130]
 
     return data
+
+
+def download_data(tx_hash: str, file_name: str) -> None:
+    """Function to easily download data from the Bitcoin Blockchain.
+
+    Args:
+        tx_hash: transaction hash of interest that contains the data
+        file_name: filename to which the data will be written
+
+    """
+
+    raw_tx = get_transaction(tx_hash)
+    data = collect_uploaded_data(raw_tx)
+    decoded_data = decode_hex_message(data[16:-112])[0]
+
+    f = open(file_name, "wb")
+    f.write(decoded_data)
+    f.close()
