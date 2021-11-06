@@ -9,6 +9,7 @@ Block Explorer offers functions to retrieve information about blocks on the Bitc
 import requests
 from typing import Tuple
 from typing import Union
+import codecs
 
 
 def __show_info(raw_block: dict) -> None:
@@ -129,7 +130,9 @@ def decode_hex_message(msg: Union[str, list]) -> list:
 
     decoded_msg = []
     for message in msg:
-        decoded_msg.append(bytes.fromhex(message).decode('utf-8', errors='ignore'))
+
+        decoded = codecs.decode(message, 'hex')
+        decoded_msg.append(decoded)
 
     return decoded_msg
 

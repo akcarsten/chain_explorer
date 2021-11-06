@@ -1,5 +1,4 @@
 import blockexplorer.explorer as exp
-import codecs
 
 # Example 1: Genesis block
 # Encoded in the input message
@@ -30,6 +29,7 @@ print([s for s in msg if 'not' in str(s)])
 
 # Example 3: The Bitcoin white paper
 raw_tx = exp.get_transaction('54e48e5f5c656b26c3bca14a8c95aa583d07ebe84dde3b7dd4a78f4e4186e713')
+exp.show_transaction_info(raw_tx)
 
 pdf = ''
 n = 0
@@ -43,6 +43,53 @@ for output in raw_tx['out']:
         pdf = pdf + output['script'][cur:cur + 130]
     n +=1
 
+decoded_hex = exp.decode_hex_message(pdf[16:-112])[0]
+
 f = open("bitcoin.pdf", "wb")
-f.write(codecs.decode(pdf[16:-112], 'hex'))
+f.write(decoded_hex)
+f.close()
+
+
+# Example 4: Satoshis Upload/Download Tool
+
+# Part 1: The Downloader
+
+raw_tx = exp.get_transaction('6c53cd987119ef797d5adccd76241247988a0a5ef783572a9972e7371c5fb0cc')
+exp.show_transaction_info(raw_tx)
+
+code = ''
+for output in raw_tx['out']:
+
+    cur = 4
+    code = code + output['script'][cur:cur + 130]
+    cur += 132
+    code = code + output['script'][cur:cur + 130]
+    cur += 132
+    code = code + output['script'][cur:cur + 130]
+
+decoded_hex = exp.decode_hex_message(code[16:-112])[0]
+
+f = open("downloader.py", "wb")
+f.write(decoded_hex)
+f.close()
+
+# Part 2: The Uploader
+
+raw_tx = exp.get_transaction('4b72a223007eab8a951d43edc171befeabc7b5dca4213770c88e09ba5b936e17')
+exp.show_transaction_info(raw_tx)
+
+code = ''
+for output in raw_tx['out']:
+
+    cur = 4
+    code = code + output['script'][cur:cur + 130]
+    cur += 132
+    code = code + output['script'][cur:cur + 130]
+    cur += 132
+    code = code + output['script'][cur:cur + 130]
+
+decoded_hex = exp.decode_hex_message(code[16:-112])[0]
+
+f = open("uploader.py", "wb")
+f.write(decoded_hex)
 f.close()
