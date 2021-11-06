@@ -110,33 +110,6 @@ def collect_messages(raw_block: dict) -> Tuple[list, list]:
     return input_msg, output_msg
 
 
-def decode_hex_message(msg: Union[str, list]) -> list:
-    """Function to decode hexadecimal messages to ASCII code.
-
-    Args:
-        msg: hexadecimal message either as a string or a list of strings.
-
-    Returns:
-        list: decoded hexadecimal input messages
-
-    Examples:
-        >>> decode_hex_message('5361746f736869')
-        ['Satoshi']
-
-    """
-
-    if type(msg) == str:
-        msg = [msg]
-
-    decoded_msg = []
-    for message in msg:
-
-        decoded = codecs.decode(message, 'hex')
-        decoded_msg.append(decoded)
-
-    return decoded_msg
-
-
 def show_block_info(raw_block: dict) -> None:
     """Function to print information in the console.
 
@@ -152,7 +125,7 @@ def show_transaction_info(raw_tx: dict) -> None:
     """Function to collect general information about a transaction and print it in the console.
 
     Args:
-        raw_tx: Transaction information as dictionary retrieved by 'get_transaction'
+        raw_tx: Transaction information as dictionary retrieved by 'get_transaction'.
 
     """
 
@@ -181,3 +154,54 @@ def show_transaction_info(raw_tx: dict) -> None:
     }
 
     __show_info(tx_info)
+
+
+def decode_hex_message(msg: Union[str, list]) -> list:
+    """Function to decode hexadecimal messages to ASCII code.
+
+    Args:
+        msg: hexadecimal message either as a string or a list of strings.
+
+    Returns:
+        list: decoded hexadecimal input messages
+
+    Examples:
+        >>> decode_hex_message('5361746f736869')
+        ['Satoshi']
+
+    """
+
+    if type(msg) == str:
+        msg = [msg]
+
+    decoded_msg = []
+    for message in msg:
+
+        decoded = codecs.decode(message, 'hex')
+        decoded_msg.append(decoded)
+
+    return decoded_msg
+
+
+def collect_uploaded_data(raw_tx: dict) -> str :
+    """Function to format and collect all outputs from a ransaction that contains
+    data uploaded via the Satoshi upload tool.
+
+    Args:
+        raw_tx: Transaction information as dictionary retrieved by 'get_transaction'.
+
+    Returns:
+        str: formatted outputs
+
+    """
+
+    data = ''
+    for output in raw_tx['out']:
+        cur = 4
+        data = data + output['script'][cur:cur + 130]
+        cur += 132
+        data = data + output['script'][cur:cur + 130]
+        cur += 132
+        data = data + output['script'][cur:cur + 130]
+
+    return data

@@ -98,3 +98,11 @@ def test_show_transaction_info(mock_print):
     exp.show_transaction_info(raw_tx)
 
     mock_print.assert_called_with('fee: 297401')
+
+
+def test_collect_uploaded_data():
+
+    raw_tx = exp.get_transaction('6c53cd987119ef797d5adccd76241247988a0a5ef783572a9972e7371c5fb0cc')
+    data = exp.collect_uploaded_data(raw_tx)
+    
+    assert data.endswith("f1888ac147922cbce6b2c1206c687f486ed7afa55e73ea01488ac")
