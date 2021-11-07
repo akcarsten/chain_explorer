@@ -38,8 +38,8 @@ transaction = [
 ]
 
 messages = [
-    ('54686973206973206a75737420612074657374', ['This is just a test']),
-    (['5361746f736869', '4e616b616d6f746f'], ['Satoshi', 'Nakamoto'])
+    ('54686973206973206a75737420612074657374', [b'This is just a test']),
+    (['5361746f736869', '4e616b616d6f746f'], [b'Satoshi', b'Nakamoto'])
 ]
 
 
