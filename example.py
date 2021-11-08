@@ -56,3 +56,43 @@ for output in raw_tx['out']:
 print('\nThis is text from the Wikipedia page about Nelson Mandela, encoded on the Bitcoin blockchain:\n')
 print(exp.decode_hex_message(data)[0][8:-114].
       decode('utf8', errors="ignore"))
+
+# Part 2: The image of Nelson Mandela
+
+# Now let's dig a little deeper.
+# The input to the above transaction was an output of an previous transaction ID: 6550612141802894
+# We can see that as follows:
+
+prev_out_tx_id = raw_tx['inputs'][0]['prev_out']['spending_outpoints'][0]['tx_index']
+
+# So let's load this transaction
+
+raw_block = exp.get_by_block(raw_tx['block_index'])
+
+for tx in raw_block['tx']:
+    if tx['inputs'][0]['prev_out'] is not None:
+        if tx['inputs'][0]['prev_out']['tx_index'] == prev_out_tx_id:
+            print('found it')
+            print(tx['hash'])
+
+
+raw_tx = exp.get_transaction('78f0e6de0ce007f4dd4a09085e649d7e354f70bc7da06d697b167f353f115b8e')
+
+for o in raw_tx['out']:
+   print(o)
+
+test = exp.get_by_block(273536)
+
+for t in test['tx']:
+
+    if t['hash'] == '8881a937a437ff6ce83be3a89d77ea88ee12315f37f7ef0dd3742c30eef92dba':
+        print(t['hash'])
+        print(t['tx_index'])
+
+    if t['inputs'][0]['prev_out'] is not None:
+        if t['inputs'][0]['prev_out']['tx_index'] == 6550612141802894:
+             print(t['hash'])
+             print(t['tx_index'])
+
+
+test['tx'][0]['hash']
