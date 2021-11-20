@@ -184,7 +184,7 @@ def decode_hex_message(msg: Union[str, list]) -> list:
 
 
 def collect_uploaded_data(raw_tx: dict) -> str:
-    """Function to format and collect all outputs from a ransaction that contains
+    """Function to format and collect all outputs from a transaction that contains
     data uploaded via the Satoshi upload tool.
 
     Args:
