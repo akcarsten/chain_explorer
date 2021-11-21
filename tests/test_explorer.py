@@ -76,12 +76,12 @@ def test_get_transaction(key, value):
 
 def test_get_single_address():
 
-    single_address = exp.get_single_address('1QF3Dp1AMudu17xT6PopWupGKKhWgP1FSc')
+    multi_address = exp.get_multi_address('1QF3Dp1AMudu17xT6PopWupGKKhWgP1FSc')
 
-    assert list(single_address.keys()) == \
-           ['hash160', 'address', 'n_tx', 'n_unredeemed', 'total_received', 'total_sent', 'final_balance', 'txs']
+    assert list(multi_address.keys()) == \
+           ['addresses', 'wallet', 'txs', 'info', 'recommend_include_fee']
 
-    assert single_address['txs'][0]['hash'] == '78f0e6de0ce007f4dd4a09085e649d7e354f70bc7da06d697b167f353f115b8e'
+    assert multi_address['txs'][0]['hash'] == '78f0e6de0ce007f4dd4a09085e649d7e354f70bc7da06d697b167f353f115b8e'
 
 
 def test_collect_messages():

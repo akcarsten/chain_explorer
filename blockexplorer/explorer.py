@@ -87,7 +87,7 @@ def get_transaction(tx_hash: str) -> dict:
     return requests.get(url + tx_hash).json()
 
 
-def get_single_address(address: str) -> dict:
+def get_multi_address(address: str) -> dict:
     """Function to retrieve all information about a single address
 
     Args:
@@ -98,7 +98,7 @@ def get_single_address(address: str) -> dict:
 
     """
 
-    url = 'https://blockchain.info/rawaddr/'
+    url = 'https://blockchain.info/multiaddr?active='
 
     return requests.get(url + address).json()
 
