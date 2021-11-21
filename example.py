@@ -53,15 +53,33 @@ print('\nThis is text from the Wikipedia page about Nelson Mandela, encoded on t
 print(exp.decode_hex_message(data)[0][8:-114].
       decode('utf8', errors="ignore"))
 
+
 # Part 2: The image of Nelson Mandela
 
-# Now let's dig a little deeper.
-
 exp.show_transaction_info(raw_tx)
-
 # The transaction was recorded in block #273536
 
-raw_block = exp.get_by_block(273536)
+raw_block = exp.get_by_block(273536) #318595
+
+data = []
+for tx in raw_block['tx']:
+    for single_tx in tx['out']:
+        if single_tx['value'] <= 5500:
+            data.append(single_tx['script'][6:-4])
+
+jpg = ''.join(data)
+
+header_index = jpg.find('ffd8')
+footer_index = jpg.find('ffd9')
+
+jpg = exp.decode_hex_message(jpg[header_index:footer_index])[0]
+
+f = open('test.jpg', "wb")
+f.write(jpg)
+f.close()
+
+# Part 3: The Mandela speech
+raw_block = exp.get_by_block(273522)
 
 data = []
 tx_index = []
@@ -71,13 +89,3 @@ for tx in raw_block['tx']:
             print(single_tx['script'])
             data.append(single_tx['script'][6:-4])
             tx_index.append(tx['hash'])
-
-jpg = (data[27:])
-jpg = ''.join(jpg)
-
-jpg = exp.decode_hex_message(jpg[12:])[0]   # The header starts with ffd8 the previous 12 bytes are garbage and corrupt he image file
-
-f = open('test.jpg', "wb")
-f.write(jpg)
-f.close()
-
