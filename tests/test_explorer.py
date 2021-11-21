@@ -44,7 +44,10 @@ messages = [
 
 
 def test_get_latest_block():
-    pass
+
+    latest_block = exp.get_latest_block()
+
+    assert list(latest_block.keys()) == ['height', 'hash', 'time', 'block_index', 'txIndexes']
 
 
 @pytest.mark.parametrize("key, value", blockinfo)
