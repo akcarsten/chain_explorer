@@ -43,6 +43,10 @@ messages = [
 ]
 
 
+def test_get_latest_block():
+    pass
+
+
 @pytest.mark.parametrize("key, value", blockinfo)
 def test_get_by_block(key, value):
 
@@ -59,6 +63,24 @@ def test_get_by_hash(key, value):
     assert raw_block[key] == value
 
 
+@pytest.mark.parametrize("key, value", transaction)
+def test_get_transaction(key, value):
+
+    tx = exp.get_transaction(transaction[0][1])
+
+    assert tx[key] == value
+
+
+def test_get_single_address():
+
+    single_address = exp.get_single_address('1QF3Dp1AMudu17xT6PopWupGKKhWgP1FSc')
+
+    assert list(single_address.keys()) == \
+           ['hash160', 'address', 'n_tx', 'n_unredeemed', 'total_received', 'total_sent', 'final_balance', 'txs']
+
+    assert single_address['txs'][0]['hash'] == '78f0e6de0ce007f4dd4a09085e649d7e354f70bc7da06d697b167f353f115b8e'
+
+
 def test_collect_messages():
 
     raw_block = exp.get_by_block(0)
@@ -66,12 +88,6 @@ def test_collect_messages():
 
     assert msgs[0][0].find('d65732030332f4a616e2f323030') == 29
     assert msgs[1][0].find('130b7105cd6a828e03909a67962') == 29
-
-
-@pytest.mark.parametrize("key, value", messages)
-def test_decode_hex_message(key, value):
-
-    assert exp.decode_hex_message(key) == value
 
 
 @patch('builtins.print')
@@ -83,14 +99,6 @@ def test_show_block_info(mock_print):
     mock_print.assert_called_with('weight: 1140')
 
 
-@pytest.mark.parametrize("key, value", transaction)
-def test_get_transaction(key, value):
-
-    tx = exp.get_transaction(transaction[0][1])
-
-    assert tx[key] == value
-
-
 @patch('builtins.print')
 def test_show_transaction_info(mock_print):
 
@@ -98,6 +106,12 @@ def test_show_transaction_info(mock_print):
     exp.show_transaction_info(raw_tx)
 
     mock_print.assert_called_with('fee: 297401')
+
+
+@pytest.mark.parametrize("key, value", messages)
+def test_decode_hex_message(key, value):
+
+    assert exp.decode_hex_message(key) == value
 
 
 def test_collect_uploaded_data():
@@ -109,4 +123,4 @@ def test_collect_uploaded_data():
 
 
 def test_download_data():
-    False
+    pass

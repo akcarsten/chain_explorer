@@ -87,6 +87,22 @@ def get_transaction(tx_hash: str) -> dict:
     return requests.get(url + tx_hash).json()
 
 
+def get_single_address(address: str) -> dict:
+    """Function to retrieve all information about a single address
+
+    Args:
+        address: address of interest address
+
+    Returns:
+        dict: raw data on the address history
+
+    """
+
+    url = 'https://blockchain.info/rawaddr/'
+
+    return requests.get(url + address).json()
+
+
 def collect_messages(raw_block: dict) -> Tuple[list, list]:
     """Function to collect all input and output messages into two lists.
 
