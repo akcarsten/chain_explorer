@@ -1,4 +1,5 @@
 import blockexplorer.explorer as exp
+import time
 
 # Example 1: Genesis block
 # Encoded in the input message
@@ -65,6 +66,7 @@ data = []
 for tx in raw_block['tx']:
     for single_tx in tx['out']:
         if single_tx['value'] <= 5500:
+            print(tx['hash'])
             data.append(single_tx['script'][6:-4])
 
 jpg = ''.join(data)
@@ -72,11 +74,13 @@ jpg = ''.join(data)
 header_index = jpg.find('ffd8')
 footer_index = jpg.find('ffd9')
 
-jpg = exp.decode_hex_message(jpg[header_index:footer_index])[0]
+jpg = exp.decode_hex_message(jpg[header_index:footer_index + 4])[0] # add 4 bytes to include the complete footer (ffd9)
 
-f = open('test.jpg', "wb")
+f = open('test1.jpg', "wb")
 f.write(jpg)
 f.close()
+
+
 
 # Part 3: The Mandela speech
 raw_block = exp.get_by_block(273522)
@@ -89,3 +93,71 @@ for tx in raw_block['tx']:
             print(single_tx['script'])
             data.append(single_tx['script'][6:-4])
             tx_index.append(tx['hash'])
+            
+            
+            
+##### ALTERNATIVE
+
+def collect_out_sripts(raw_tx):
+
+    scripts = []
+    for single_tx in raw_tx['out']:
+        if single_tx['value'] <= 5500:
+            scripts.append(single_tx['script'][6:-4])
+
+    return scripts
+
+
+def get_input_address(raw_tx):
+    return raw_tx['inputs'][0]['prev_out']['addr']
+
+
+def get_transactions(tx_hash):
+
+    txs = []
+
+    while tx_hash is not None:
+
+        print(tx_hash)
+
+        txs.append(tx_hash)
+
+        raw_tx = exp.get_transaction(tx_hash)
+        input_address = get_input_address(raw_tx)
+        multi_address = exp.get_multi_address(input_address)
+
+        if len(multi_address['txs']) == 2:
+            for tx in multi_address['txs']:
+                if tx['hash'] != raw_tx['hash']:
+                    tx_hash = (tx['hash'])
+                else:
+                    tx_hash = None
+        else:
+            tx_hash = None
+
+        time.sleep(2)
+
+    return txs
+
+#tx_hash = '78f0e6de0ce007f4dd4a09085e649d7e354f70bc7da06d697b167f353f115b8e'
+tx_hash = '542de4ab1ac6917030e0dd5b3be584460a77ae6ed53ea3634b084c3750b4d05e'
+
+txs = get_transactions(tx_hash)
+
+data = []
+for tx in txs[::-1]:
+    print(tx)
+
+    raw_tx = exp.get_transaction(tx)
+    data = data + collect_out_sripts(raw_tx)
+
+jpg = ''.join(data)
+
+header_index = jpg.find('ffd8')
+footer_index = jpg.find('ffd9', header_index)
+
+jpg = exp.decode_hex_message(jpg[header_index:footer_index + 4])[0] # add 4 bytes to include the complete footer (ffd9)
+
+f = open('test2.jpg', "wb")
+f.write(jpg)
+f.close()
