@@ -139,13 +139,20 @@ def get_transactions(tx_hash):
 
     return txs
 
-#tx_hash = '78f0e6de0ce007f4dd4a09085e649d7e354f70bc7da06d697b167f353f115b8e'
-tx_hash = '542de4ab1ac6917030e0dd5b3be584460a77ae6ed53ea3634b084c3750b4d05e'
+#tx_hash = '78f0e6de0ce007f4dd4a09085e649d7e354f70bc7da06d697b167f353f115b8e'  # Mandela
+#tx_hash = '542de4ab1ac6917030e0dd5b3be584460a77ae6ed53ea3634b084c3750b4d05e'  # Mother Teresa
+#tx_hash = 'd1bbc2f586d1de38edefe10337e2e99d1e8580d0be1a34f0f74315b12c131425'  # John Lennon NOT WORKING YET
+#tx_hash = 'eec9d22292be2740050993d53673e1f969ebd8001669bb5498a59bef6a0a98cb' # PNG picture implement decoder
+tx_hash = 'f3b185bd932ef28cfd8e0d6891fa5af059a0446a1512e24461ddade4f1df0b53'  # Michael Jackson
 
-txs = get_transactions(tx_hash)
+raw_tx = exp.get_transaction(tx_hash)
+
+message = exp.decode_hex_message(''.join(collect_out_sripts(raw_tx)))[0].decode('utf-8').split('\r\n')
+message[0] = message[0][:64]
+txs = message[:-1]
 
 data = []
-for tx in txs[::-1]:
+for tx in txs:
     print(tx)
 
     raw_tx = exp.get_transaction(tx)
