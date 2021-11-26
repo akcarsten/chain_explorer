@@ -239,3 +239,13 @@ def download_data(tx_hash: str, file_name: str) -> None:
     f = open(file_name, "wb")
     f.write(decoded_data)
     f.close()
+
+
+def collect_out_scripts(raw_tx: dict):
+
+    scripts = []
+    for single_tx in raw_tx['out']:
+        if single_tx['value'] <= 5500:
+            scripts.append(single_tx['script'][6:-4])
+
+    return scripts

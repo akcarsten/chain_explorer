@@ -125,5 +125,8 @@ def test_collect_uploaded_data():
     assert data.endswith("f1888ac147922cbce6b2c1206c687f486ed7afa55e73ea01488ac")
 
 
+def test_collect_out_scripts():
+    exp.collect_out_scripts(raw_tx)
+
 def test_download_data():
     pass
