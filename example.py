@@ -98,47 +98,6 @@ for tx in raw_block['tx']:
             
 ##### ALTERNATIVE
 
-def collect_out_sripts(raw_tx):
-
-    scripts = []
-    for single_tx in raw_tx['out']:
-        if single_tx['value'] <= 5500:
-            scripts.append(single_tx['script'][6:-4])
-
-    return scripts
-
-
-def get_input_address(raw_tx):
-    return raw_tx['inputs'][0]['prev_out']['addr']
-
-
-def get_transactions(tx_hash):
-
-    txs = []
-
-    while tx_hash is not None:
-
-        print(tx_hash)
-
-        txs.append(tx_hash)
-
-        raw_tx = exp.get_transaction(tx_hash)
-        input_address = get_input_address(raw_tx)
-        multi_address = exp.get_multi_address(input_address)
-
-        if len(multi_address['txs']) == 2:
-            for tx in multi_address['txs']:
-                if tx['hash'] != raw_tx['hash']:
-                    tx_hash = (tx['hash'])
-                else:
-                    tx_hash = None
-        else:
-            tx_hash = None
-
-        time.sleep(2)
-
-    return txs
-
 # TEXT DECODING NEEDS TO BE IMPLEMENTED
 
 #tx_hash = '78f0e6de0ce007f4dd4a09085e649d7e354f70bc7da06d697b167f353f115b8e'  # Mandela
@@ -158,7 +117,9 @@ tx_hash = '56a8434f73486bc973673ec01502fa1ebdcaa0248ec3a572643520e63c0bdc57' # C
 
 raw_tx = exp.get_transaction(tx_hash)
 
-message = exp.decode_hex_message(''.join(collect_out_sripts(raw_tx)))[0].decode('utf-8', errors='ignore').split('\r\n')
+out_scripts = exp.collect_out_scripts(raw_tx, max_value=5500)
+
+message = exp.decode_hex_message(''.join(out_scripts))[0].decode('utf-8', errors='ignore').split('\r\n')
 message[0] = message[0][:64]
 txs = message[:-1]
 
@@ -167,7 +128,7 @@ for tx in txs:
     print(tx)
 
     raw_tx = exp.get_transaction(tx)
-    data = data + collect_out_sripts(raw_tx)
+    data = data + exp.collect_out_scripts(raw_tx, max_value=5500)
 
 jpg = ''.join(data)
 
