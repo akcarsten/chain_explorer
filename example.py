@@ -1,4 +1,5 @@
 import blockexplorer.explorer as exp
+import blockexplorer.util as util
 import time
 
 # Example 1: Genesis block
@@ -75,11 +76,7 @@ header_index = jpg.find('ffd8')
 footer_index = jpg.find('ffd9')
 
 jpg = exp.decode_hex_message(jpg[header_index:footer_index + 4])[0] # add 4 bytes to include the complete footer (ffd9)
-
-f = open('test1.jpg', "wb")
-f.write(jpg)
-f.close()
-
+util.write_binary_to_file(jpg, 'test1.jpg')
 
 
 # Part 3: The Mandela speech
@@ -118,8 +115,10 @@ tx_hash = '56a8434f73486bc973673ec01502fa1ebdcaa0248ec3a572643520e63c0bdc57' # C
 raw_tx = exp.get_transaction(tx_hash)
 
 out_scripts = exp.collect_out_scripts(raw_tx, max_value=5500)
+out_scripts = ''.join(out_scripts)
 
-message = exp.decode_hex_message(''.join(out_scripts))[0].decode('utf-8', errors='ignore').split('\r\n')
+message = exp.decode_hex_message(out_scripts)[0].decode('utf-8', errors='ignore').split('\r\n')
+
 message[0] = message[0][:64]
 txs = message[:-1]
 
@@ -137,6 +136,5 @@ footer_index = jpg.find('ffd9', header_index)
 
 jpg = exp.decode_hex_message(jpg[header_index:footer_index + 4])[0] # add 4 bytes to include the complete footer (ffd9)
 
-f = open('test2.jpg', "wb")
-f.write(jpg)
-f.close()
+util.write_binary_to_file(jpg, 'test2.jpg')
+

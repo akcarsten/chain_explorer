@@ -10,6 +10,7 @@ import requests
 from typing import Tuple
 from typing import Union
 import codecs
+import blockexplorer.util as util
 
 
 def __show_info(raw_block: dict) -> None:
@@ -236,9 +237,7 @@ def download_data(tx_hash: str, file_name: str) -> None:
     data = collect_uploaded_data(raw_tx)
     decoded_data = decode_hex_message(data[16:-112])[0]
 
-    f = open(file_name, "wb")
-    f.write(decoded_data)
-    f.close()
+    util.write_binary_to_file(decoded_data, file_name)
 
 
 def collect_out_scripts(raw_tx: dict, max_value: int = float('inf')) -> list:
