@@ -241,7 +241,7 @@ def download_data(tx_hash: str, file_name: str) -> None:
     f.close()
 
 
-def collect_out_scripts(raw_tx: dict, max_value: int = None) -> list:
+def collect_out_scripts(raw_tx: dict, max_value: int = float('inf')) -> list:
     """Function to collect all the scripts from a transaction.
 
     Args:
