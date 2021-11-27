@@ -131,8 +131,7 @@ for tx in txs:
 
 jpg = ''.join(data)
 
-header_index = jpg.find('ffd8')
-footer_index = jpg.find('ffd9', header_index)
+header_index, footer_index = util.find_jpg_markers(jpg)
 
 jpg = exp.decode_hex_message(jpg[header_index:footer_index + 4])[0] # add 4 bytes to include the complete footer (ffd9)
 
