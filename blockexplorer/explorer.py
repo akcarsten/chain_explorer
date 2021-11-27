@@ -241,11 +241,22 @@ def download_data(tx_hash: str, file_name: str) -> None:
     f.close()
 
 
-def collect_out_scripts(raw_tx: dict):
+def collect_out_scripts(raw_tx: dict, max_value: int = None) -> list:
+    """Function to collect all the scripts from a transaction.
+
+    Args:
+        raw_tx: transaction hash of interest that contains the data
+        max_value: Allows to set a threshold for the value of each transaction that will be included.
+                   Typically scripts of interest are in transactions with low value.
+
+    Returns:
+        A list with all the scripts from the transactions where the first 6 and the last 4 bytes are removed.
+
+    """
 
     scripts = []
     for single_tx in raw_tx['out']:
-        if single_tx['value'] <= 5500:
+        if single_tx['value'] <= max_value:
             scripts.append(single_tx['script'][6:-4])
 
     return scripts
