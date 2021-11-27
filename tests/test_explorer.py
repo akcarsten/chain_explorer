@@ -126,7 +126,20 @@ def test_collect_uploaded_data():
 
 
 def test_collect_out_scripts():
-    exp.collect_out_scripts(raw_tx)
+
+    raw_tx = {'out': [
+        {'script': '76a9140a6137396432363833636631313261303931363588ac',
+         'value': 5500},
+        {'script': '76a914326664613738636638313431643532376435636388ac',
+         'value': 1000}]}
+
+    actual = exp.collect_out_scripts(raw_tx)
+
+    expected = [
+        '0a61373964323638336366313132613039313635',
+        '3266646137386366383134316435323764356363']
+
+    assert expected == actual
 
 def test_download_data():
     pass
