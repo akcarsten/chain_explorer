@@ -141,5 +141,6 @@ def test_collect_out_scripts():
 
     assert expected == actual
 
+
 def test_download_data():
     pass
