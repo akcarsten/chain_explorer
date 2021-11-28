@@ -189,7 +189,7 @@ def decode_hex_message(msg: Union[str, list]) -> list:
 
     """
 
-    if type(msg) == str:
+    if isinstance(msg, str):
         msg = [msg]
 
     decoded_msg = []
@@ -277,7 +277,7 @@ def collect_multi_out_scripts(tx_list: list, max_value: float = float('inf')) ->
 
     """
 
-    if type(tx_list) is not list:
+    if not isinstance(tx_list, list):
         tx_list = [tx_list]
 
     scripts = []

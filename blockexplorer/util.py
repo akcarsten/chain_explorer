@@ -17,7 +17,7 @@ def write_binary_to_file(data: bytes, file_name: str) -> None:
 
     """
 
-    assert type(data) is bytes, "Input data is not of type bytes"
+    assert isinstance(data, bytes), "Input data is not of type bytes"
 
     f = open(file_name, "wb")
     f.write(data)
