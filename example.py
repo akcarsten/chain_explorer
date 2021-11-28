@@ -61,7 +61,7 @@ print(exp.decode_hex_message(data)[0][8:-114].
 exp.show_transaction_info(raw_tx)
 # The transaction was recorded in block #273536
 
-raw_block = exp.get_by_block(273536) #318595
+raw_block = exp.get_by_block(273536)
 
 data = []
 for tx in raw_block['tx']:
@@ -75,7 +75,7 @@ jpg = ''.join(data)
 header_index = jpg.find('ffd8')
 footer_index = jpg.find('ffd9')
 
-jpg = exp.decode_hex_message(jpg[header_index:footer_index + 4])[0] # add 4 bytes to include the complete footer (ffd9)
+jpg = exp.decode_hex_message(jpg[header_index:footer_index + 4])[0]  # add 4 bytes to include the complete footer (ffd9)
 util.write_binary_to_file(jpg, 'test1.jpg')
 
 
@@ -92,19 +92,20 @@ for tx in raw_block['tx']:
             tx_index.append(tx['hash'])
             
 
-#tx_hash = '78f0e6de0ce007f4dd4a09085e649d7e354f70bc7da06d697b167f353f115b8e'  # Mandela
-#tx_hash = '542de4ab1ac6917030e0dd5b3be584460a77ae6ed53ea3634b084c3750b4d05e'  # Mother Teresa
-#tx_hash = 'd1bbc2f586d1de38edefe10337e2e99d1e8580d0be1a34f0f74315b12c131425'  # John Lennon NOT WORKING YET
-#tx_hash = 'eec9d22292be2740050993d53673e1f969ebd8001669bb5498a59bef6a0a98cb' # PNG picture implement decoder
-#tx_hash = 'f3b185bd932ef28cfd8e0d6891fa5af059a0446a1512e24461ddade4f1df0b53'  # Michael Jackson
-#tx_hash = '151c05d420a3caa41ccc32bceeb75a2a3ab2b443cf55380fe17d442d024000b1'  # Random mother and son
-#tx_hash = '73e5e9a23b7870c3942abf640655191c38e817793e8373d074dec62609ce843b'  # This is a gallery. Currently only the first image is decoded -> fix
-#tx_hash = 'abf602893f5329ae27481b6966c636979f5714a1d63368747bb374f59f4e4b68' # Marylin Monroe
-#tx_hash = '3c667e40667c496ff7c220b3abc3db391e8a3ebc158ead91f6b2d9a2b486c6b7'  # Isac Asimov
-#tx_hash = '3e4d412944604e7b28f1bb521040968858aecc4518aef8359788205ef14e7d28'
-#tx_hash = 'a1a859baf7682453409188ffd4f9b5956b39703eb94942afde02a3f4ab0b305b'  # Odd length error
-#tx_hash = 'c53719cd196ea0f6c6bc77f828954d485854854a4b22ccb3d63692dacfa17b36' #
-#tx_hash = '1bc87dbff1ff5831287f62ac7cf95579794e4386688479bab66174963f9a4a0c' # Spok text + audio + picture NOT WORKING
-tx_hash = '56a8434f73486bc973673ec01502fa1ebdcaa0248ec3a572643520e63c0bdc57' # CO2 paper abstract and figure NOT WORKING
+# tx_hash = '78f0e6de0ce007f4dd4a09085e649d7e354f70bc7da06d697b167f353f115b8e'  # Mandela
+# tx_hash = '542de4ab1ac6917030e0dd5b3be584460a77ae6ed53ea3634b084c3750b4d05e'  # Mother Teresa
+# tx_hash = 'd1bbc2f586d1de38edefe10337e2e99d1e8580d0be1a34f0f74315b12c131425'  # John Lennon NOT WORKING YET
+# tx_hash = 'eec9d22292be2740050993d53673e1f969ebd8001669bb5498a59bef6a0a98cb' # PNG picture implement decoder
+# tx_hash = 'f3b185bd932ef28cfd8e0d6891fa5af059a0446a1512e24461ddade4f1df0b53'  # Michael Jackson
+# tx_hash = '151c05d420a3caa41ccc32bceeb75a2a3ab2b443cf55380fe17d442d024000b1'  # Random mother and son
+# tx_hash = '73e5e9a23b7870c3942abf640655191c38e817793e8373d074dec62609ce843b'
+# This is a gallery. Currently only the first image is decoded -> fix
+# tx_hash = 'abf602893f5329ae27481b6966c636979f5714a1d63368747bb374f59f4e4b68' # Marylin Monroe
+# tx_hash = '3c667e40667c496ff7c220b3abc3db391e8a3ebc158ead91f6b2d9a2b486c6b7'  # Isac Asimov
+# tx_hash = '3e4d412944604e7b28f1bb521040968858aecc4518aef8359788205ef14e7d28'
+# tx_hash = 'a1a859baf7682453409188ffd4f9b5956b39703eb94942afde02a3f4ab0b305b'  # Odd length error
+# tx_hash = 'c53719cd196ea0f6c6bc77f828954d485854854a4b22ccb3d63692dacfa17b36' #
+# tx_hash = '1bc87dbff1ff5831287f62ac7cf95579794e4386688479bab66174963f9a4a0c' # Spok text + audio + picture NOT WORKING
+tx_hash = '56a8434f73486bc973673ec01502fa1ebdcaa0248ec3a572643520e63c0bdc57'  # CO2 paper and figure NOT WORKING
 
 apertus.download_image(tx_hash, 'test', max_value=5500)
