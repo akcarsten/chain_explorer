@@ -43,6 +43,7 @@ messages = [
     (['5361746f736869', '4e616b616d6f746f'], [b'Satoshi', b'Nakamoto'])
 ]
 
+
 def test_get_latest_block():
 
     latest_block = exp.get_latest_block()

@@ -90,7 +90,7 @@ for tx in raw_block['tx']:
             print(single_tx['script'])
             data.append(single_tx['script'][6:-4])
             tx_index.append(tx['hash'])
-            
+
 
 # tx_hash = '78f0e6de0ce007f4dd4a09085e649d7e354f70bc7da06d697b167f353f115b8e'  # Mandela
 # tx_hash = '542de4ab1ac6917030e0dd5b3be584460a77ae6ed53ea3634b084c3750b4d05e'  # Mother Teresa

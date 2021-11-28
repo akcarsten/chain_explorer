@@ -59,4 +59,3 @@ def test_download_image(tmp_path, tx_hash, expected):
     actual = hashlib.sha256(data).digest()
 
     assert actual == expected
-
