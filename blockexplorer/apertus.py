@@ -1,3 +1,11 @@
+"""Block Explorer Apertus Module Documentation.
+
+The Apertus module offers downloads and decodes data from the Bitcoin blockchain that was uploaded
+via the AtomSea & EMBII tool.'
+
+
+"""
+
 from blockexplorer import explorer as exp
 from blockexplorer import util
 
