@@ -123,8 +123,8 @@ dmypy.json
 .pyre/
 
 # image data
-.jpg
-.jpeg
-.png
-.gif
-.bmp
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.bmp
