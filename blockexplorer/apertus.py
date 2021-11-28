@@ -43,7 +43,7 @@ def __extract_jpg(scripts: str, header_index: int, footer_index: int) -> bytes:
     return exp.decode_hex_message(image)[0]
 
 
-def download_image(tx_hash: str, file_name, max_value=float('inf')) -> None:
+def download_image(tx_hash: str, file_name: str, max_value: float=float('inf')) -> None:
     """Function to download image data encoded in the AtomSea & EMBII encoding.
     The result will be written to file
 
@@ -51,7 +51,7 @@ def download_image(tx_hash: str, file_name, max_value=float('inf')) -> None:
         tx_hash: root transaction hash
         file_name: filename under which the result will be saved. The correct extension will be added automatically.
         max_value: Allows to set a threshold for the value of each transaction that will be included.
-                   Typically scripts of interest are in transactions with low value.
+        Typically scripts of interest are in transactions with low value.
 
     """
 

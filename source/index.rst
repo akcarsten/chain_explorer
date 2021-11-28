@@ -23,3 +23,13 @@ Block Explorer functions
 =========================================
 .. automodule:: blockexplorer.explorer
    :members:
+
+Apertus functions
+=========================================
+.. automodule:: blockexplorer.apertus
+   :members:
+
+Utility functions
+=========================================
+.. automodule:: blockexplorer.util
+   :members:
