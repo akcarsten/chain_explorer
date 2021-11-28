@@ -44,15 +44,15 @@ def find_file_markers(data: str) -> Tuple[int, int, str]:
     footer_index = -1
     file_type = None
 
-    for key in formats.keys():
-        header_index = data.find(formats[key][0])
-        footer_index = data.find(formats[key][1], header_index)
+    for item in formats.items():
+        header_index = data.find(item[1][0])
+        footer_index = data.find(item[1][1], header_index)
 
         if footer_index != -1:
-            print(f'File of type {key} found.')
+            print(f'File of type {item[0]} found.')
 
-            footer_index = footer_index + len(formats[key][1])
-            file_type = key
+            footer_index = footer_index + len(item[1][1])
+            file_type = item[0]
 
             break
 
