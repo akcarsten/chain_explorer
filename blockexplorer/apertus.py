@@ -68,9 +68,9 @@ def download_image(tx_hash: str, file_name: str, max_value: float = float('inf')
     out_scripts = exp.collect_out_scripts(raw_tx, max_value=max_value)
     out_scripts = ''.join(out_scripts)
 
-    txs = __extract_transactions(out_scripts)
+    tx_list = __extract_transactions(out_scripts)
 
-    scripts = exp.collect_multi_out_scripts(txs, max_value=max_value)
+    scripts = exp.collect_multi_out_scripts(tx_list, max_value=max_value)
     scripts = ''.join(scripts)
 
     header_index, footer_index = util.find_jpg_markers(scripts)
