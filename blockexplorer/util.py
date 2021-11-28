@@ -19,9 +19,8 @@ def write_binary_to_file(data: bytes, file_name: str) -> None:
 
     assert isinstance(data, bytes), "Input data is not of type bytes"
 
-    f = open(file_name, "wb")
-    f.write(data)
-    f.close()
+    with open(file_name, "wb") as file:
+        file.write(data)
 
 
 def find_jpg_markers(data: str) -> Tuple[int, int]:
