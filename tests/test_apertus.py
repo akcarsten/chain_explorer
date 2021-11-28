@@ -1,5 +1,12 @@
 import pytest
-import blockexplorer.apertus as apertus
+import hashlib
+from blockexplorer import apertus
+
+
+tx_tests = [
+    ('78f0e6de0ce007f4dd4a09085e649d7e354f70bc7da06d697b167f353f115b8e',
+     b'\xa4r\x99\xedmCz\xd2@d+\x85\xae\xcd\xfdt\x02I\x9ef2\xa8f\xb3!\xdf\xf0\x1f\x1e\xde\x157'),
+]
 
 
 def test_extract_transactions():
@@ -40,6 +47,16 @@ def test_extract_jpg():
     assert actual == expected
 
 
-def test_download_image():
-    # THIS TEST NEEDS TO BE IMPLEMENTED
-    assert 1 == 2
+@pytest.mark.parametrize("tx_hash, expected", tx_tests)
+def test_download_image(tmp_path, tx_hash, expected):
+
+    file_name = str(tmp_path)
+    apertus.download_image(tx_hash, file_name=file_name, max_value=5500)
+
+    with open(file_name + '.jpg', 'rb') as image_file:
+        data = image_file.read()
+
+    actual = hashlib.sha256(data).digest()
+
+    assert actual == expected
+
