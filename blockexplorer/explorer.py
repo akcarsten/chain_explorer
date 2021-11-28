@@ -282,7 +282,7 @@ def collect_multi_out_scripts(tx_list: list, max_value: float = float('inf')) ->
 
     scripts = []
     for transaction in tx_list:
-        print('Fetching scripts from transaction: {}'.format(transaction))
+        print(f'Fetching scripts from transaction: {transaction}')
 
         raw_tx = get_transaction(str(transaction))
         scripts = scripts + collect_out_scripts(raw_tx, max_value=max_value)
