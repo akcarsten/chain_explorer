@@ -6,11 +6,11 @@ Block Explorer offers functions to retrieve information about blocks on the Bitc
 
 """
 
-import requests
 from typing import Tuple
 from typing import Union
 import codecs
 import time
+import requests
 from blockexplorer import util
 
 
@@ -281,10 +281,10 @@ def collect_multi_out_scripts(tx_list: list, max_value: float = float('inf')) ->
         tx_list = [tx_list]
 
     scripts = []
-    for tx in tx_list:
-        print('Fetching scripts from transaction: {}'.format(tx))
+    for transaction in tx_list:
+        print('Fetching scripts from transaction: {}'.format(transaction))
 
-        raw_tx = get_transaction(str(tx))
+        raw_tx = get_transaction(str(transaction))
         scripts = scripts + collect_out_scripts(raw_tx, max_value=max_value)
 
         time.sleep(1)
