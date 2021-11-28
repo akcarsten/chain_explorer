@@ -11,7 +11,7 @@ from typing import Tuple
 from typing import Union
 import codecs
 import time
-from blockexplorer import util as util
+from blockexplorer import util
 
 
 def __show_info(raw_block: dict) -> None:
