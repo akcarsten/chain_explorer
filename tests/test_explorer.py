@@ -143,8 +143,20 @@ def test_collect_out_scripts():
 
 
 def test_collect_multi_out_scripts():
-    # THIS TEST NEEDS TO BE IMPLEMENTED
-    assert 1 == 2
+
+    tx_list = [
+        '8881a937a437ff6ce83be3a89d77ea88ee12315f37f7ef0dd3742c30eef92dba',
+        '575061146335bd57f2dc132112152d0eeea44cf187ea6a52ac02435a7e5bea44',
+    ]
+
+    actual = exp.collect_multi_out_scripts(tx_list, max_value=5500)
+
+    expected = [
+        '223339365ce2809c5468657265206973206e6f74',
+        '3ed509881f9851e5bc4dd778f6a955d193af3dc5'
+    ]
+
+    assert [actual[0], actual[-1]] == expected
 
 
 def test_download_data(tmp_path):
