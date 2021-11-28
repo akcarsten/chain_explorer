@@ -76,7 +76,7 @@ def download_image(tx_hash: str, file_name: str, max_value: float=float('inf')) 
     header_index, footer_index = util.find_jpg_markers(scripts)
 
     image = []
-    if (header_index, footer_index) != []:
+    if header_index:  # Checking for the header is sufficient here since no footer is returned is the header is missing.
         image = __extract_jpg(scripts, header_index, footer_index)
 
         file_name = file_name + '.jpg'
