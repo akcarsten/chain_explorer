@@ -1,5 +1,5 @@
-import blockexplorer.explorer as exp
-import blockexplorer.util as util
+from blockexplorer import explorer as exp
+from blockexplorer import util as util
 
 # TEXT DECODING NEEDS TO BE IMPLEMENTED
 
