@@ -20,4 +20,4 @@ jobs:
         pip install pylint
     - name: Analysing the code with pylint
       run: |
-        pylint $(find . -name "./blockexplorer/*.py" | xargs) --max-line-length=200
+        pylint $(find . -name "/blockexplorer/*.py" | xargs) --max-line-length=200
