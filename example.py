@@ -1,7 +1,6 @@
-import blockexplorer.explorer as exp
-import blockexplorer.util as util
-import blockexplorer.apertus as apertus
-import time
+from blockexplorer import explorer as exp
+from blockexplorer import util
+from blockexplorer import apertus
 
 # Example 1: Genesis block
 # Encoded in the input message
