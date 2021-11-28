@@ -1,5 +1,6 @@
 import pytest
 from unittest.mock import patch
+import hashlib
 import blockexplorer.explorer as exp
 
 
@@ -41,7 +42,6 @@ messages = [
     ('54686973206973206a75737420612074657374', [b'This is just a test']),
     (['5361746f736869', '4e616b616d6f746f'], [b'Satoshi', b'Nakamoto'])
 ]
-
 
 def test_get_latest_block():
 
@@ -147,6 +147,17 @@ def test_collect_multi_out_scripts():
     assert 1 == 2
 
 
-def test_download_data():
-    # THIS TEST NEEDS TO BE IMPLEMENTED
-    assert 1 == 2
+def test_download_data(tmp_path):
+
+    file_name = str(tmp_path) + '.pdf'
+    tx_hash = '54e48e5f5c656b26c3bca14a8c95aa583d07ebe84dde3b7dd4a78f4e4186e713'
+
+    exp.download_data(tx_hash, file_name=file_name)
+
+    with open(file_name, 'rb') as pdf_file:
+        data = pdf_file.read()
+
+    actual = hashlib.sha256(data).digest()
+    expected = b'\xb1gA\x91\xa8\x8e\xc5\xcd\xd73\xe4$\n\x81\x801\x05\xdcA-lg\x08\xd5:\xb9O\xc2H\xf4\xf5S'
+
+    assert actual == expected
