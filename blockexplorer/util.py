@@ -23,19 +23,37 @@ def write_binary_to_file(data: bytes, file_name: str) -> None:
         file.write(data)
 
 
-def find_jpg_markers(data: str) -> Tuple[int, int]:
-    """Function to identify the start and the end of a jpg file within a string.
+def find_file_markers(data: str) -> Tuple[int, int, str]:
+    """Function to identify the start and the end of a various file formats within a string.
 
     Args:
-        data: String that contains the jpg image. The string has to contain the jpg as hex values.
+        data: String that contains the data. The string has to contain the data as hex values.
 
     Returns:
-        The index of the start of the jpg image and the index of the end of the image within the input string.
+        The index of the start of the data file and the index of the end of the data within the input string.
         If no header is found also no footer will be returned.
 
     """
 
-    header_index = data.find('ffd8')
-    footer_index = data.find('ffd9', header_index)
+    formats = {
+        'jpg': ['ffd8', 'ffd9'],
+        'png': ['89504e470d', '44ae426082']
+    }
 
-    return header_index, footer_index
+    header_index = -1
+    footer_index = -1
+    file_type = None
+
+    for key in formats.keys():
+        header_index = data.find(formats[key][0])
+        footer_index = data.find(formats[key][1], header_index)
+
+        if footer_index != -1:
+            print(f'File of type {key} found.')
+
+            footer_index = footer_index + len(formats[key][1])
+            file_type = key
+
+            break
+
+    return header_index, footer_index, file_type

@@ -35,14 +35,14 @@ def test_extract_transactions():
     assert actual == expected
 
 
-def test_extract_jpg():
+def test_extract_data():
 
     scripts = '7719c16e0d44772edf98b73d0d004bf32800d479ecabc648f5a'
     header_index = 5
     footer_index = 15
 
-    expected = b'\x16\xe0\xd4Gr\xed\xf9'
-    actual = apertus.__extract_jpg(scripts, header_index, footer_index)
+    expected = b'\x16\xe0\xd4Gr'
+    actual = apertus.__extract_data(scripts, header_index, footer_index)
 
     assert actual == expected
 

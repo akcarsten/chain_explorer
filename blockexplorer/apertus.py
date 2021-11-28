@@ -32,7 +32,7 @@ def __extract_transactions(out_scripts: str) -> list:
     return formatted_scripts[:-1]
 
 
-def __extract_jpg(scripts: str, header_index: int, footer_index: int) -> bytes:
+def __extract_data(scripts: str, header_index: int, footer_index: int) -> bytes:
     """Function to extract the jpg data from a hex string.
     The result is decoded to bytes and can be directly written to file
 
@@ -46,7 +46,7 @@ def __extract_jpg(scripts: str, header_index: int, footer_index: int) -> bytes:
 
     """
 
-    image = scripts[header_index:footer_index + 4]  # add 4 bytes to include the complete footer (ffd9)
+    image = scripts[header_index:footer_index]
 
     return exp.decode_hex_message(image)[0]
 
@@ -73,12 +73,9 @@ def download_image(tx_hash: str, file_name: str, max_value: float = float('inf')
     scripts = exp.collect_multi_out_scripts(tx_list, max_value=max_value)
     scripts = ''.join(scripts)
 
-    header_index, footer_index = util.find_jpg_markers(scripts)
+    header_index, footer_index, file_type = util.find_file_markers(scripts)
+    image = __extract_data(scripts, header_index, footer_index)
 
-    image = []
-    if header_index:  # Checking for the header is sufficient here since no footer is returned is the header is missing.
-        image = __extract_jpg(scripts, header_index, footer_index)
-
-        file_name = file_name + '.jpg'
+    file_name = file_name + f'.{file_type}'
 
     util.write_binary_to_file(image, file_name)

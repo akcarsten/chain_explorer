@@ -95,7 +95,7 @@ for tx in raw_block['tx']:
 # tx_hash = '78f0e6de0ce007f4dd4a09085e649d7e354f70bc7da06d697b167f353f115b8e'  # Mandela
 # tx_hash = '542de4ab1ac6917030e0dd5b3be584460a77ae6ed53ea3634b084c3750b4d05e'  # Mother Teresa
 # tx_hash = 'd1bbc2f586d1de38edefe10337e2e99d1e8580d0be1a34f0f74315b12c131425'  # John Lennon NOT WORKING YET
-# tx_hash = 'eec9d22292be2740050993d53673e1f969ebd8001669bb5498a59bef6a0a98cb' # PNG picture implement decoder
+tx_hash = 'eec9d22292be2740050993d53673e1f969ebd8001669bb5498a59bef6a0a98cb'  # PNG picture
 # tx_hash = 'f3b185bd932ef28cfd8e0d6891fa5af059a0446a1512e24461ddade4f1df0b53'  # Michael Jackson
 # tx_hash = '151c05d420a3caa41ccc32bceeb75a2a3ab2b443cf55380fe17d442d024000b1'  # Random mother and son
 # tx_hash = '73e5e9a23b7870c3942abf640655191c38e817793e8373d074dec62609ce843b'
@@ -106,6 +106,6 @@ for tx in raw_block['tx']:
 # tx_hash = 'a1a859baf7682453409188ffd4f9b5956b39703eb94942afde02a3f4ab0b305b'  # Odd length error
 # tx_hash = 'c53719cd196ea0f6c6bc77f828954d485854854a4b22ccb3d63692dacfa17b36' #
 # tx_hash = '1bc87dbff1ff5831287f62ac7cf95579794e4386688479bab66174963f9a4a0c' # Spok text + audio + picture NOT WORKING
-tx_hash = '56a8434f73486bc973673ec01502fa1ebdcaa0248ec3a572643520e63c0bdc57'  # CO2 paper and figure NOT WORKING
+# tx_hash = '56a8434f73486bc973673ec01502fa1ebdcaa0248ec3a572643520e63c0bdc57'  # CO2 paper and figure NOT WORKING
 
 apertus.download_image(tx_hash, 'test', max_value=5500)
