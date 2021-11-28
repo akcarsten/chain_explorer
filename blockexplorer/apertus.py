@@ -51,7 +51,7 @@ def __extract_jpg(scripts: str, header_index: int, footer_index: int) -> bytes:
     return exp.decode_hex_message(image)[0]
 
 
-def download_image(tx_hash: str, file_name: str, max_value: float=float('inf')) -> None:
+def download_image(tx_hash: str, file_name: str, max_value: float = float('inf')) -> None:
     """Function to download image data encoded in the AtomSea & EMBII encoding.
     The result will be written to file
 
