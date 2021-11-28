@@ -1,5 +1,6 @@
 import blockexplorer.explorer as exp
 import blockexplorer.util as util
+import blockexplorer.apertus as apertus
 import time
 
 # Example 1: Genesis block
@@ -91,11 +92,6 @@ for tx in raw_block['tx']:
             data.append(single_tx['script'][6:-4])
             tx_index.append(tx['hash'])
             
-            
-            
-##### ALTERNATIVE
-
-# TEXT DECODING NEEDS TO BE IMPLEMENTED
 
 #tx_hash = '78f0e6de0ce007f4dd4a09085e649d7e354f70bc7da06d697b167f353f115b8e'  # Mandela
 #tx_hash = '542de4ab1ac6917030e0dd5b3be584460a77ae6ed53ea3634b084c3750b4d05e'  # Mother Teresa
@@ -112,28 +108,4 @@ for tx in raw_block['tx']:
 #tx_hash = '1bc87dbff1ff5831287f62ac7cf95579794e4386688479bab66174963f9a4a0c' # Spok text + audio + picture NOT WORKING
 tx_hash = '56a8434f73486bc973673ec01502fa1ebdcaa0248ec3a572643520e63c0bdc57' # CO2 paper abstract and figure NOT WORKING
 
-raw_tx = exp.get_transaction(tx_hash)
-
-out_scripts = exp.collect_out_scripts(raw_tx, max_value=5500)
-out_scripts = ''.join(out_scripts)
-
-message = exp.decode_hex_message(out_scripts)[0].decode('utf-8', errors='ignore').split('\r\n')
-
-message[0] = message[0][:64]
-txs = message[:-1]
-
-data = []
-for tx in txs:
-    print(tx)
-
-    raw_tx = exp.get_transaction(tx)
-    data = data + exp.collect_out_scripts(raw_tx, max_value=5500)
-
-jpg = ''.join(data)
-
-header_index, footer_index = util.find_jpg_markers(jpg)
-
-jpg = exp.decode_hex_message(jpg[header_index:footer_index + 4])[0] # add 4 bytes to include the complete footer (ffd9)
-
-util.write_binary_to_file(jpg, 'test2.jpg')
-
+apertus.download_image(tx_hash, 'test', max_value=5500)

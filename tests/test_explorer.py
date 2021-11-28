@@ -142,5 +142,11 @@ def test_collect_out_scripts():
     assert expected == actual
 
 
+def test_collect_multi_out_scripts():
+    # THIS TEST NEEDS TO BE IMPLEMENTED
+    assert 1 == 2
+
+
 def test_download_data():
-    pass
+    # THIS TEST NEEDS TO BE IMPLEMENTED
+    assert 1 == 2

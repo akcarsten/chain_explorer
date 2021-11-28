@@ -1,5 +1,5 @@
 import pytest
-import blockexplorer.aperatus as ap
+import blockexplorer.apertus as ap
 
 
 def test_collect_transactions():

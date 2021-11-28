@@ -10,6 +10,7 @@ import requests
 from typing import Tuple
 from typing import Union
 import codecs
+import time
 import blockexplorer.util as util
 
 
@@ -240,7 +241,7 @@ def download_data(tx_hash: str, file_name: str) -> None:
     util.write_binary_to_file(decoded_data, file_name)
 
 
-def collect_out_scripts(raw_tx: dict, max_value: int = float('inf')) -> list:
+def collect_out_scripts(raw_tx: dict, max_value: float = float('inf')) -> list:
     """Function to collect all the scripts from a transaction.
 
     Args:
@@ -249,7 +250,8 @@ def collect_out_scripts(raw_tx: dict, max_value: int = float('inf')) -> list:
                    Typically scripts of interest are in transactions with low value.
 
     Returns:
-        A list with all the scripts from the transactions where the first 6 and the last 4 bytes are removed.
+        A list with all the scripts from the transactions.
+        Note the first 6 and the last 4 bytes are removed in the output.
 
     """
 
@@ -257,5 +259,34 @@ def collect_out_scripts(raw_tx: dict, max_value: int = float('inf')) -> list:
     for single_tx in raw_tx['out']:
         if single_tx['value'] <= max_value:
             scripts.append(single_tx['script'][6:-4])
+
+    return scripts
+
+
+def collect_multi_out_scripts(tx_list: list, max_value: float = float('inf')) -> list:
+    """Function to collect all the scripts from multiple transactions.
+
+    Args:
+        tx_list: list with all transactions of interest
+        max_value: Allows to set a threshold for the value of each transaction that will be included.
+                   Typically scripts of interest are in transactions with low value.
+
+    Returns:
+        A list with all the scripts from the transactions.
+        Note the first 6 and the last 4 bytes are removed in the output.
+
+    """
+
+    if type(tx_list) is not list:
+        tx_list = [tx_list]
+
+    scripts = []
+    for tx in tx_list:
+        print('Fetching scripts from transaction: {}'.format(tx))
+
+        raw_tx = get_transaction(str(tx))
+        scripts = scripts + collect_out_scripts(raw_tx, max_value=max_value)
+
+        time.sleep(1)
 
     return scripts
