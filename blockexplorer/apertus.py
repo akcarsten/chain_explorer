@@ -33,16 +33,16 @@ def __extract_transactions(out_scripts: str) -> list:
 
 
 def __extract_data(scripts: str, header_index: int, footer_index: int) -> bytes:
-    """Function to extract the jpg data from a hex string.
+    """Function to extract the data from a hex string.
     The result is decoded to bytes and can be directly written to file
 
     Args:
-        scripts: Hex string that contains jpg data
-        header_index: Start of the jpg data
-        footer_index: End of the jpg data
+        scripts: Hex string that contains data in form of a known file type (e.g. .jpg or .png)
+        header_index: Start of the data
+        footer_index: End of the data
 
     Returns:
-        jpg image in binary format.
+        data in binary format.
 
     """
 
