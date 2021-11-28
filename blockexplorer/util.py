@@ -32,6 +32,7 @@ def find_jpg_markers(data: str) -> Tuple[int, int]:
 
     Returns:
         The index of the start of the jpg image and the index of the end of the image within the input string.
+        If no header is found also no footer will be returned.
 
     """
 

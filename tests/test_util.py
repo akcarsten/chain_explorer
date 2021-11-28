@@ -1,10 +1,16 @@
 import pytest
-from unittest.mock import patch
 import blockexplorer.util as util
 
 
-def test_find_jpg_markers():
+jpg_strings = [
+    ((20, 47), 'sometextofnointerestffd8thisshouldnotbedetectedffd9thisisalsonotrelevant'),
+    ((-1, -1), 'there_is_no_image_in_here'),
+    ((13, -1), 'onlyTheHeaderffd8'),
+    ((-1, -1), 'onlyTheFooterffd9')
+]
 
-    test_string = 'sometextofnointerestffd8thisshouldnotbedetectedffd9thisisalsonotrelevant'
 
-    assert (20, 47) == util.find_jpg_markers(test_string)
+@pytest.mark.parametrize("actual, string", jpg_strings)
+def test_find_jpg_markers(actual, string):
+
+    assert actual == util.find_jpg_markers(string)
