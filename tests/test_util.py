@@ -3,12 +3,12 @@ import blockexplorer.util as util
 
 
 jpg_strings = [
-    ((20, 52, 'jpg'), 'sometextofnointerestffd8thisshouldnotbedetected0ffd9thisisalsonotrelevant'),
+    ((20, 72, 'jpg'), 'sometextofnointerestffd8ffe000104a4649460001thisshouldnotbedetected0ffd9thisisalsonotrelevant'),
     ((11, 55, 'png'), 'howaboutpng89504e470dthisshould0notbedetected44ae426082thisisalsonotrelevant'),
     ((-1, -1, None), 'there_is_no_image_in_here'),
-    ((-1, -1, None), 'onlyTheHeaderffd8'),
+    ((-1, -1, None), 'onlyTheHeaderffd8ffe000104a4649460001'),
     ((-1, -1, None), 'onlyTheFooterffd9'),
-    ((0, 32, 'jpg'), 'ffd8MIXED89504e470JPGand0PNGffd9OHno44ae426082')
+    ((0, 52, 'jpg'), 'ffd8ffe000104a4649460001MIXED89504e470JPGand0PNGffd9OHno44ae426082')
 ]
 
 

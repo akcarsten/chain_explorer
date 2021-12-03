@@ -36,7 +36,7 @@ def find_file_markers(data: str) -> Tuple[int, int, str]:
     """
 
     formats = {
-        'jpg': ['ffd8', 'ffd9'],
+        'jpg': ['ffd8ffe000104a4649460001', 'ffd9'],
         'png': ['89504e470d', '44ae426082']
     }
 
