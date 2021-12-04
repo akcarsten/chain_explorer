@@ -5,7 +5,9 @@ The Util module offers convenience functions to work motr efficiently with Block
 
 """
 
+import re
 from typing import Tuple
+from blockexplorer import explorer as exp
 
 
 def write_binary_to_file(data: bytes, file_name: str) -> None:
@@ -36,8 +38,8 @@ def find_file_markers(data: str) -> Tuple[int, int, str]:
     """
 
     formats = {
-        'jpg': ['ffd8ffe000104a4649460001', 'ffd9'],
-        'png': ['89504e470d', '44ae426082']
+        'png': ['89504e470d', '44ae426082'],
+        'jpg': ['ffd8', 'ffd9']
     }
 
     header_index = -1
@@ -45,15 +47,23 @@ def find_file_markers(data: str) -> Tuple[int, int, str]:
     file_type = None
 
     for item in formats.items():
-        header_index = data.find(item[1][0])
-        footer_index = data.find(item[1][1], header_index)
 
-        if footer_index != -1 and (footer_index - header_index) % 2 == 0:
-            print(f'File of type {item[0]} found.')
+        header_marker = item[1][0]
+        footer_marker = item[1][1]
 
-            footer_index = footer_index + len(item[1][1])
+        header_index = data.find(header_marker)
+        footer_index = data.find(footer_marker, header_index)
+
+        if footer_index != -1:
+
+            # Search for all End Of File markers and choose the last one, to safe guard against multiple occurance.
+            last_eof = [eof.start() for eof in re.finditer(footer_marker, data)][-1]
+
+            footer_index = last_eof + len(footer_marker)
             file_type = item[0]
 
-            break
+            if (footer_index - header_index) % 2 == 0:
+                print(f'File of type {file_type} found.')
+                break
 
     return header_index, footer_index, file_type
