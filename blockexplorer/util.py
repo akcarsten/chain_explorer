@@ -56,7 +56,7 @@ def find_file_markers(data: str) -> Tuple[int, int, str]:
 
         if footer_index != -1:
 
-            # Search for all End Of File markers and choose the last one, to safe guard against multiple occurance.
+            # Search for all End Of File markers and choose the last one, to safe guard against multiple occurrence.
             last_eof = [eof.start() for eof in re.finditer(footer_marker, data)][-1]
 
             footer_index = last_eof + len(footer_marker)
