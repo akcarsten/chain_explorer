@@ -51,15 +51,31 @@ def __extract_data(scripts: str, header_index: int, footer_index: int) -> bytes:
     return exp.decode_hex_message(image)[0]
 
 
-def download_image(tx_hash: str, file_name: str, max_value: float = float('inf')) -> None:
-    """Function to download image data encoded in the AtomSea & EMBII encoding.
-    The result will be written to file
+def __add_extension(file_name: str, file_extension: str) -> str:
+    """Function to add an extension to a file name
+
+     Args:
+         file_name: String with the target file name lacking the extension (e.g. .txt)
+
+    Returns:
+        File name with correct extension.
+
+     """
+
+    return f'{file_name}.{file_extension}'
+
+
+def __get_data(tx_hash: str, max_value: float = float('inf')):
+    """Function to download all data from a AtomSea & EMBII upload.
+    No interpretation of the data is performed only the collected out scripts are returned as a string.
 
     Args:
         tx_hash: root transaction hash
-        file_name: filename under which the result will be saved. The correct extension will be added automatically.
         max_value: Allows to set a threshold for the value of each transaction that will be included.
         Typically scripts of interest are in transactions with low value.
+
+    Returns:
+        Concatenated out scripts of all transactions.
 
     """
 
@@ -71,11 +87,46 @@ def download_image(tx_hash: str, file_name: str, max_value: float = float('inf')
     tx_list = __extract_transactions(out_scripts)
 
     scripts = exp.collect_multi_out_scripts(tx_list, max_value=max_value)
-    scripts = ''.join(scripts)
+
+    return ''.join(scripts)
+
+
+def download_image(tx_hash: str, file_name: str, max_value: float = float('inf')) -> None:
+    """Function to download and decode image data that was uploaded via AtomSea & EMBII.
+    The result will be written to file
+
+    Args:
+        tx_hash: root transaction hash
+        file_name: filename under which the result will be saved. The correct extension will be added automatically.
+        max_value: Allows to set a threshold for the value of each transaction that will be included.
+        Typically scripts of interest are in transactions with low value.
+
+    """
+
+    scripts = __get_data(tx_hash, max_value)
 
     header_index, footer_index, file_type = util.find_file_markers(scripts)
     image = __extract_data(scripts, header_index, footer_index)
 
-    file_name = file_name + f'.{file_type}'
+    file_name = __add_extension(file_name, file_type)
 
     util.write_binary_to_file(image, file_name)
+
+
+def download_data(tx_hash: str, file_name: str, max_value: float = float('inf')) -> None:
+    """Function to download raw data that was uploaded via AtomSea & EMBII.
+    The result will be written to a .txt file
+
+    Args:
+        tx_hash: root transaction hash
+        file_name: filename under which the result will be saved. The correct extension will be added automatically.
+        max_value: Allows to set a threshold for the value of each transaction that will be included.
+        Typically scripts of interest are in transactions with low value.
+
+    """
+
+    if not file_name.endswith('.txt'):
+        file_name = __add_extension(file_name, 'txt')
+
+    scripts = __get_data(tx_hash, max_value)
+    util.write_to_txt(scripts, file_name)
