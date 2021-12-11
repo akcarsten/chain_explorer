@@ -34,7 +34,7 @@ def write_to_txt(data: str, file_name: str) -> None:
 
     """
 
-    with open(file_name, "w+") as file:
+    with open(file_name, "w+", encoding="utf-8") as file:
         file.write(data)
 
 
@@ -49,7 +49,7 @@ def read_from_txt(file_name: str) -> list:
 
     """
 
-    with open(file_name, "r") as file:
+    with open(file_name, "r", encoding="utf-8") as file:
         lines = []
         for next_line in file:
             lines.append(next_line.strip())
