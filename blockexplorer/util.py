@@ -7,7 +7,6 @@ The Util module offers convenience functions to work motr efficiently with Block
 
 import re
 from typing import Tuple
-from blockexplorer import explorer as exp
 
 
 def write_binary_to_file(data: bytes, file_name: str) -> None:
