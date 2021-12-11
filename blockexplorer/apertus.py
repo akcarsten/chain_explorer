@@ -6,6 +6,7 @@ via the AtomSea & EMBII tool.'
 
 """
 
+import os
 from blockexplorer import explorer as exp
 from blockexplorer import util
 
@@ -130,3 +131,40 @@ def download_data(tx_hash: str, file_name: str, max_value: float = float('inf'))
 
     scripts = __get_data(tx_hash, max_value)
     util.write_to_txt(scripts, file_name)
+
+
+def download_from_file(txt_file: str = './data/atomsea.txt', max_value: float = float('inf')) -> list:
+    """Function to download multiple root transactions and everything connected to them.
+    The root transactions are provided through a .txt file which by default is the atomsea.txt file
+    in the data sub-directory.
+
+    The data will be saved in a directory called atomsea/<tx_hash>/rawdata.txt file
+    If a file with the same name already exists the download will be skipped. Also if a download fails
+    the corresponding transaction hash will be returned.
+    Therefore the function can be called multiple times to retrieve all root transactions in case
+    internet connection breaks without downloading already retrieved data twice.
+
+    Args:
+        txt_file: File name of the .txt file where the root transactions are defined.
+        max_value: Allows to set a threshold for the value of each transaction that will be included.
+
+    Returns:
+        A list with all transactions that failed to download.
+
+    """
+
+    root_tx = util.read_from_txt(txt_file)
+
+    failed = []
+    for tx_hash in root_tx:
+        data_folder = f'atomsea/{tx_hash}'
+        util.create_folder(data_folder)
+
+        file_name = f'{data_folder}/rawdata.txt'
+        if not os.path.isfile(file_name):
+            try:
+                download_data(tx_hash, file_name, max_value=max_value)
+            except RuntimeError:
+                failed.append(tx_hash)
+
+    return failed
