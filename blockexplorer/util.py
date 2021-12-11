@@ -50,7 +50,9 @@ def read_from_txt(file_name: str) -> list:
     """
 
     with open(file_name, "r") as file:
-        lines = file.readlines()
+        lines = []
+        for next_line in file:
+            lines.append(next_line.strip())
 
     return lines
 
