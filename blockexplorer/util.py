@@ -38,6 +38,23 @@ def write_to_txt(data: str, file_name: str) -> None:
         file.write(data)
 
 
+def read_from_txt(file_name: str) -> list:
+    """Function to read data from .txt file.
+
+    Args:
+        file_name: Data to be written to .txt file.
+
+    Returns:
+        Content of the .txt file
+
+    """
+
+    with open(file_name, "r") as file:
+        lines = file.readlines()
+
+    return lines
+
+
 def find_file_markers(data: str) -> Tuple[int, int, str]:
     """Function to identify the start and the end of a various file formats within a string.
 
@@ -89,5 +106,5 @@ def create_folder(directory: str) -> None:
         directory: String that contains the directory structure to be created
 
     """
-
-    os.makedirs(directory)
+    if not os.path.isdir(directory):
+        os.makedirs(directory)

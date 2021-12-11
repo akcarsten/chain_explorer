@@ -34,6 +34,7 @@ def test_find_file_markers(expected, string):
 @pytest.mark.parametrize("test_structure", test_folders)
 def test_create_folders(test_structure, tmp_path):
 
-    util.create_folder(f'{tmp_path}/ {test_structure}')
+    directory = f'{tmp_path}/{test_structure}'
+    util.create_folder(directory)
 
-    assert os.path.isdir(test_structure)
+    assert os.path.isdir(directory)
