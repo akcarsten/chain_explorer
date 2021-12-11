@@ -128,3 +128,6 @@ dmypy.json
 *.png
 *.gif
 *.bmp
+
+# Data folders
+/atomsea
