@@ -24,6 +24,19 @@ def write_binary_to_file(data: bytes, file_name: str) -> None:
         file.write(data)
 
 
+def write_to_txt(data: str, file_name: str) -> None:
+    """Function to write data to .txt file.
+
+    Args:
+        data: Data to be written to .txt file.
+        file_name: Output file name. For example: raw_data.txt
+
+    """
+
+    with open(file_name, "w+") as file:
+        file.write(data)
+
+
 def find_file_markers(data: str) -> Tuple[int, int, str]:
     """Function to identify the start and the end of a various file formats within a string.
 
