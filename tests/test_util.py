@@ -1,4 +1,6 @@
 import pytest
+import os
+import shutil
 import blockexplorer.util as util
 
 
@@ -11,8 +13,27 @@ jpg_strings = [
     ((0, 52, 'jpg'), 'ffd8ffe000104a4649460001MIXED89504e470JPGand0PNGffd9OHno44ae426082')
 ]
 
+test_folders = [
+    'test_folder',
+    'test_folder/subfolder',
+    'test_folder\\subfolder'
+]
+
+'''
+@pytest.fixture(scope="function")
+def delete_folders():
+    os.system('rmdir /S /Q "test_folder"')
+'''
 
 @pytest.mark.parametrize("expected, string", jpg_strings)
 def test_find_file_markers(expected, string):
 
     assert expected == util.find_file_markers(string)
+
+
+@pytest.mark.parametrize("test_structure", test_folders)
+def test_create_folders(test_structure, tmp_path):
+
+    util.create_folder(f'{tmp_path}/ {test_structure}')
+
+    assert os.path.isdir(test_structure)

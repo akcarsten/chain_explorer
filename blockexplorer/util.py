@@ -6,6 +6,7 @@ The Util module offers convenience functions to work motr efficiently with Block
 """
 
 import re
+import os
 from typing import Tuple
 
 
@@ -79,3 +80,14 @@ def find_file_markers(data: str) -> Tuple[int, int, str]:
                 break
 
     return header_index, footer_index, file_type
+
+
+def create_folder(directory: str) -> None:
+    """"Function to create a new directory or a directory with sub-directories.py
+
+    Args:
+        directory: String that contains the directory structure to be created
+
+    """
+
+    os.makedirs(directory)
