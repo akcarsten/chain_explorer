@@ -38,3 +38,9 @@ def test_create_folders(test_structure, tmp_path):
     util.create_folder(directory)
 
     assert os.path.isdir(directory)
+
+
+def test_write_to_txt():
+    
+    with pytest.raises(AssertionError):
+        util.write_to_txt(['Oh no a list!'], 'this_will_not_be_written.txt')

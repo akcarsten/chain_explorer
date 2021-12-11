@@ -34,6 +34,8 @@ def write_to_txt(data: str, file_name: str) -> None:
 
     """
 
+    assert isinstance(data, str), f'input must be of type str not: {type(data)}'
+
     with open(file_name, "w+", encoding="utf-8") as file:
         file.write(data)
 
