@@ -19,16 +19,23 @@ test_folders = [
     'test_folder\\subfolder'
 ]
 
-'''
-@pytest.fixture(scope="function")
-def delete_folders():
-    os.system('rmdir /S /Q "test_folder"')
-'''
+test_markers = [
+    (([1], [3]), [[1], [3]]),
+    (([1, 4], [3, 8]), [[1, 4], [3, 8]]),
+    (([1, 4, 9], [3, 8, 21]), [[1, 4, 9], [3, 8, 21]]),
+    (([9], [21]), [[9], [3, 8, 21]]),
+]
 
 @pytest.mark.parametrize("expected, string", jpg_strings)
 def test_find_file_markers(expected, string):
 
     assert expected == util.find_file_markers(string)
+
+
+@pytest.mark.parametrize("expected, markers", test_markers)
+def test_match_markers(expected, markers):
+
+    assert expected == util.match_markers(markers)
 
 
 @pytest.mark.parametrize("test_structure", test_folders)

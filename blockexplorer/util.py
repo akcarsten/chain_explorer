@@ -103,6 +103,33 @@ def find_file_markers(data: str) -> Tuple[int, int, str]:
     return header_index, footer_index, file_type
 
 
+def match_markers(markers: list) -> Tuple[list, list]:
+    """Function to validate and match file markers retrieve with find_file_markers.
+    For example, Start of Image (SOI) or End of Image (EOI) markers can randomly occur in image
+    as well as non-image data. The typical expectation is to find as many SOI markers as EOI markers.
+
+    This function takes the SOI markers and looks for matches in the EOI markers based on two criteria:
+    1. The EOI marker must come after the SOI marker
+    2. The total length of the SOI to EOI interval must be even, otherwise decoding to binary is not possible
+
+    Both measures improve the quality of the markers but are no guaranty that the markers are no false positive.
+
+    Args:
+        markers: dictionary
+    """
+
+    start_of_file = markers[0]
+    end_of_file = []
+
+    for sof in start_of_file:
+        for eof in markers[1]:
+            if eof > sof and (eof + sof) % 2 == 0:
+                end_of_file.append(eof)
+                break
+
+    return start_of_file, end_of_file
+
+
 def create_folder(directory: str) -> None:
     """"Function to create a new directory or a directory with sub-directories.py
 
