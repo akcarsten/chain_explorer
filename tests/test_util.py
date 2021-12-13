@@ -13,6 +13,26 @@ jpg_strings = [
     ((0, 52, 'jpg'), 'ffd8ffe000104a4649460001MIXED89504e470JPGand0PNGffd9OHno44ae426082')
 ]
 
+jpg_strings_new = [
+    ({'png': [[], []], 'jpg': [[20], [68]], 'gif': [[], []], 'zip': [[], []]},
+     'sometextofnointerestffd8ffe000104a4649460001thisshouldnotbedetected0ffd9thisisalsonotrelevant'),
+
+    ({'png': [[11], [45]], 'jpg': [[], []], 'gif': [[], []], 'zip': [[], []]},
+     'howaboutpng89504e470dthisshould0notbedetected44ae426082thisisalsonotrelevant'),
+
+    ({'png': [[], []], 'jpg': [[], []], 'gif': [[], []], 'zip': [[], []]},
+     'there_is_no_image_in_here'),
+
+    ({'png': [[], []], 'jpg': [[13], []], 'gif': [[], []], 'zip': [[], []]},
+     'onlyTheHeaderffd8'),
+
+    ({'png': [[], []], 'jpg': [[], [13]], 'gif': [[], []], 'zip': [[], []]},
+     'onlyTheFooterffd9'),
+
+    ({'png': [[], [56]], 'jpg': [[0], [48]], 'gif': [[], []], 'zip': [[], []]},
+     'ffd8ffe000104a4649460001MIXED89504e470JPGand0PNGffd9OHno44ae426082')
+]
+
 test_folders = [
     'test_folder',
     'test_folder/subfolder',
@@ -30,6 +50,12 @@ test_markers = [
 def test_find_file_markers(expected, string):
 
     assert expected == util.find_file_markers(string)
+
+
+@pytest.mark.parametrize("expected, string", jpg_strings_new)
+def test_find_markers(expected, string):
+
+    assert expected == util.find_markers(string)
 
 
 @pytest.mark.parametrize("expected, markers", test_markers)
