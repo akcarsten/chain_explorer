@@ -117,10 +117,10 @@ def download_image(tx_hash: str, file_name: str, max_value: float = float('inf')
             for i in range(len(start_of_file)):
                 image = __extract_data(data, start_of_file[i], end_of_file[i])
 
-                file_name = f'{file_name}_{n}'
-                file_name = __add_extension(file_name, item[0])
+                current_file_name = f'{file_name}_{n}'
+                current_file_name = __add_extension(current_file_name, item[0])
 
-                util.write_binary_to_file(image, file_name)
+                util.write_binary_to_file(image, current_file_name)
 
                 n += 1
 
