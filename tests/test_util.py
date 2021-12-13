@@ -13,10 +13,10 @@ jpg_strings = [
 ]
 
 jpg_strings_new = [
-    ({'png': [[], []], 'jpg': [[20], [68]], 'gif': [[], []], 'zip': [[], []]},
+    ({'png': [[], []], 'jpg': [[20], [72]], 'gif': [[], []], 'zip': [[], []]},
      'sometextofnointerestffd8ffe000104a4649460001thisshouldnotbedetected0ffd9thisisalsonotrelevant'),
 
-    ({'png': [[11], [45]], 'jpg': [[], []], 'gif': [[], []], 'zip': [[], []]},
+    ({'png': [[11], [55]], 'jpg': [[], []], 'gif': [[], []], 'zip': [[], []]},
      'howaboutpng89504e470dthisshould0notbedetected44ae426082thisisalsonotrelevant'),
 
     ({'png': [[], []], 'jpg': [[], []], 'gif': [[], []], 'zip': [[], []]},
@@ -25,10 +25,10 @@ jpg_strings_new = [
     ({'png': [[], []], 'jpg': [[13], []], 'gif': [[], []], 'zip': [[], []]},
      'onlyTheHeaderffd8'),
 
-    ({'png': [[], []], 'jpg': [[], [13]], 'gif': [[], []], 'zip': [[], []]},
+    ({'png': [[], []], 'jpg': [[], [17]], 'gif': [[], []], 'zip': [[], []]},
      'onlyTheFooterffd9'),
 
-    ({'png': [[], [56]], 'jpg': [[0], [48]], 'gif': [[], []], 'zip': [[], []]},
+    ({'png': [[], [66]], 'jpg': [[0], [52]], 'gif': [[], []], 'zip': [[], []]},
      'ffd8ffe000104a4649460001MIXED89504e470JPGand0PNGffd9OHno44ae426082')
 ]
 

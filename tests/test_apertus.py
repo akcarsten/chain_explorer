@@ -53,7 +53,7 @@ def test_download_image(tmp_path, tx_hash, expected):
     file_name = str(tmp_path)
     apertus.download_image(tx_hash, file_name=file_name, max_value=5500)
 
-    with open(file_name + '.jpg', 'rb') as image_file:
+    with open(f'{file_name}_0.jpg', 'rb') as image_file:
         data = image_file.read()
 
     actual = hashlib.sha256(data).digest()

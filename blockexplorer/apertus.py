@@ -104,14 +104,25 @@ def download_image(tx_hash: str, file_name: str, max_value: float = float('inf')
 
     """
 
-    scripts = __get_data(tx_hash, max_value)
+    data = __get_data(tx_hash, max_value)
+    markers = util.find_markers(data)
 
-    header_index, footer_index, file_type = util.find_file_markers(scripts)
-    image = __extract_data(scripts, header_index, footer_index)
+    n = 0
+    for item in markers.items():
 
-    file_name = __add_extension(file_name, file_type)
+        if len(item[1][0]) != 0 and len(item[1][1]) != 0:
 
-    util.write_binary_to_file(image, file_name)
+            start_of_file, end_of_file = util.match_markers(item[1])
+
+            for i in range(len(start_of_file)):
+                image = __extract_data(data, start_of_file[i], end_of_file[i])
+
+                file_name = f'{file_name}_{n}'
+                file_name = __add_extension(file_name, item[0])
+
+                util.write_binary_to_file(image, file_name)
+
+                n += 1
 
 
 def download_data(tx_hash: str, file_name: str, max_value: float = float('inf')) -> None:
