@@ -103,6 +103,44 @@ def find_file_markers(data: str) -> Tuple[int, int, str]:
     return header_index, footer_index, file_type
 
 
+def find_markers(data: str) -> dict:
+    """Function to identify the start and the end of various file formats within a string sequence.
+    If multiple potential starts and ends are found all will be returned
+
+    Args:
+        data: String that contains the data. The string has to contain the data as hex values.
+
+    Returns:
+        The index of all potential beginnings of a data file and the index of the potential ends within the
+        input string. The markers are returned for each potential file type.
+
+    """
+
+    formats = {
+        'png': ['89504e470d', '44ae426082'],
+        'jpg': ['ffd8', 'ffd9'],
+        'gif': ['4749463839614E015300C4', '2100003B00'],
+        'zip': ['504B030414', '504B050600']
+    }
+
+    markers = {}
+    for item in formats.items():
+
+        header_marker = item[1][0]
+        footer_marker = item[1][1]
+
+        try:
+            header_index = [sof.start() for sof in re.finditer(header_marker, data)]
+            footer_index = [eof.start() for eof in re.finditer(footer_marker, data)]
+        except IndexError:
+            header_index = []
+            footer_index = []
+
+        markers[item[0]] = [header_index, footer_index]
+
+    return markers
+
+
 def match_markers(markers: list) -> Tuple[list, list]:
     """Function to validate and match file markers retrieve with find_file_markers.
     For example, Start of Image (SOI) or End of Image (EOI) markers can randomly occur in image
