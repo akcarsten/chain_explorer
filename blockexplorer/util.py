@@ -59,50 +59,6 @@ def read_from_txt(file_name: str) -> list:
     return lines
 
 
-def find_file_markers(data: str) -> Tuple[int, int, str]:
-    """Function to identify the start and the end of a various file formats within a string.
-
-    Args:
-        data: String that contains the data. The string has to contain the data as hex values.
-
-    Returns:
-        The index of the start of the data file and the index of the end of the data within the input string.
-        If no header is found also no footer will be returned.
-
-    """
-
-    formats = {
-        'png': ['89504e470d', '44ae426082'],
-        'jpg': ['ffd8', 'ffd9']
-    }
-
-    header_index = -1
-    footer_index = -1
-    file_type = None
-
-    for item in formats.items():
-
-        header_marker = item[1][0]
-        footer_marker = item[1][1]
-
-        header_index = data.find(header_marker)
-        footer_index = data.find(footer_marker, header_index)
-
-        if footer_index != -1:
-
-            # Search for all End Of File markers and choose the last one, to safe guard against multiple occurrence.
-            last_eof = [eof.start() for eof in re.finditer(footer_marker, data)][-1]
-
-            footer_index = last_eof + len(footer_marker)
-            file_type = item[0]
-
-            if (footer_index - header_index) % 2 == 0:
-                print(f'File of type {file_type} found.')
-                break
-
-    return header_index, footer_index, file_type
-
-
 def find_markers(data: str) -> dict:
     """Function to identify the start and the end of various file formats within a string sequence.
     If multiple potential starts and ends are found all will be returned
