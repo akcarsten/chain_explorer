@@ -1,6 +1,5 @@
 import pytest
 import os
-import shutil
 import blockexplorer.util as util
 
 
@@ -45,6 +44,7 @@ test_markers = [
     (([1, 4, 9], [3, 8, 21]), [[1, 4, 9], [3, 8, 21]]),
     (([9], [21]), [[9], [3, 8, 21]]),
 ]
+
 
 @pytest.mark.parametrize("expected, string", jpg_strings)
 def test_find_file_markers(expected, string):
