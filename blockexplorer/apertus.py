@@ -147,12 +147,12 @@ def download_data(tx_hash: str, file_name: str, max_value: float = float('inf'))
 def download_from_file(txt_file: str = './data/atomsea.txt', max_value: float = float('inf')) -> list:
     """Function to download multiple root transactions and everything connected to them.
     The root transactions are provided through a .txt file which by default is the atomsea.txt file
-    in the data sub-directory.
+    in the data subdirectory.
 
     The data will be saved in a directory called atomsea/<tx_hash>/rawdata.txt file
-    If a file with the same name already exists the download will be skipped. Also if a download fails
+    If a file with the same name already exists the download will be skipped. Also, if a download fails
     the corresponding transaction hash will be returned.
-    Therefore the function can be called multiple times to retrieve all root transactions in case
+    Therefore, the function can be called multiple times to retrieve all root transactions in case
     internet connection breaks without downloading already retrieved data twice.
 
     Args:
