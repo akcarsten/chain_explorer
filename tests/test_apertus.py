@@ -51,7 +51,7 @@ def test_extract_data():
 def test_download_image(tmp_path, tx_hash, expected):
 
     file_name = str(tmp_path)
-    apertus.download_image(tx_hash, file_name=file_name, max_value=5500)
+    apertus.download_file(tx_hash, file_name=file_name, max_value=5500)
 
     with open(f'{file_name}_0.jpg', 'rb') as image_file:
         data = image_file.read()

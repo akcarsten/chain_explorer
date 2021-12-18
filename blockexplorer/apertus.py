@@ -92,15 +92,15 @@ def __get_data(tx_hash: str, max_value: float = float('inf')):
     return ''.join(scripts)
 
 
-def download_image(tx_hash: str, file_name: str, max_value: float = float('inf')) -> None:
-    """Function to download and decode image data that was uploaded via AtomSea & EMBII.
+def download_file(tx_hash: str, file_name: str, max_value: float = float('inf')) -> None:
+    """Function to download and decode files that were uploaded via AtomSea & EMBII.
     The result will be written to file
 
     Args:
         tx_hash: root transaction hash
         file_name: filename under which the result will be saved. The correct extension will be added automatically.
         max_value: Allows to set a threshold for the value of each transaction that will be included.
-        Typically scripts of interest are in transactions with low value.
+        Typically, scripts of interest are in transactions with low value.
 
     """
 
