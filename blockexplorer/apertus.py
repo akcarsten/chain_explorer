@@ -146,22 +146,22 @@ def download_file(data_source: str, file_name: str, max_value: float = float('in
 
     markers = util.find_markers(data)
 
-    n = 0
+    n_file = 0
     for item in markers.items():
 
         if len(item[1][0]) != 0 and len(item[1][1]) != 0:
 
             start_of_file, end_of_file = util.match_markers(item[1])
 
-            for i in range(len(start_of_file)):
-                image = __extract_data(data, start_of_file[i], end_of_file[i])
+            for i_file, file_start in enumerate(start_of_file):
+                image = __extract_data(data, file_start, end_of_file[i_file])
 
-                current_file_name = f'{file_name}_{n}'
+                current_file_name = f'{file_name}_{n_file}'
                 current_file_name = __add_extension(current_file_name, item[0])
 
                 util.write_binary_to_file(image, current_file_name)
 
-                n += 1
+                n_file += 1
 
 
 def download_data(tx_hash: str, file_name: str, max_value: float = float('inf')) -> None:
