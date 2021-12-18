@@ -62,3 +62,11 @@ def test_write_to_txt():
     
     with pytest.raises(AssertionError):
         util.write_to_txt(['Oh no a list!'], 'this_will_not_be_written.txt')
+
+
+@pytest.mark.parametrize("expected, string",
+                         [(False, 'notAtransaction'),
+                          (True, '78f0e6de0ce007f4dd4a09085e649d7e354f70bc7da06d697b167f353f115b8e')])
+def test_is_transaction(expected, string):
+
+    assert util.is_transaction(string) is expected

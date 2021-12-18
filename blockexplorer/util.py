@@ -125,7 +125,7 @@ def match_markers(markers: list) -> Tuple[list, list]:
 
 
 def create_folder(directory: str) -> None:
-    """"Function to create a new directory or a directory with sub-directories.py
+    """Function to create a new directory or a directory with sub-directories.py
 
     Args:
         directory: String that contains the directory structure to be created
@@ -133,3 +133,16 @@ def create_folder(directory: str) -> None:
     """
     if not os.path.isdir(directory):
         os.makedirs(directory)
+
+
+def is_transaction(transaction: str) -> bool:
+    """Function to check if an input is Bitcoin transaction hash ot not.
+
+    Args:
+        transaction: String to be tested if it is a transaction hash
+
+    Returns:
+        Result if input string represents a valid transaction hash or not
+    """
+
+    return len(transaction) == 64 and isinstance(transaction, str)
