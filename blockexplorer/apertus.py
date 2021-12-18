@@ -66,14 +66,14 @@ def __add_extension(file_name: str, file_extension: str) -> str:
     return f'{file_name}.{file_extension}'
 
 
-def __get_data(tx_hash: str, max_value: float = float('inf')):
+def __get_transaction_data(tx_hash: str, max_value: float = float('inf')) -> str:
     """Function to download all data from a AtomSea & EMBII upload.
     No interpretation of the data is performed only the collected out scripts are returned as a string.
 
     Args:
         tx_hash: root transaction hash
         max_value: Allows to set a threshold for the value of each transaction that will be included.
-        Typically scripts of interest are in transactions with low value.
+        Typically, scripts of interest are in transactions with low value.
 
     Returns:
         Concatenated out scripts of all transactions.
@@ -92,19 +92,58 @@ def __get_data(tx_hash: str, max_value: float = float('inf')):
     return ''.join(scripts)
 
 
-def download_file(tx_hash: str, file_name: str, max_value: float = float('inf')) -> None:
+def __get_txt_data(file_name: str) -> str:
+    """Function to read data from a txt file. The txt file is expected to contain concatenated out scripts.
+
+    Args:
+        file_name: String with the path to the .txt file.
+
+    Returns:
+        Content of the txt file
+
+    """
+
+    return util.read_from_txt(file_name)[0]
+
+
+def __load_data(data_source: str, max_value: float = float('inf')) -> str:
+    """Function to load transaction data either directly from https://www.blockchain.com/
+    or from a .txt file. The data in the .txt file must contain the concatenated out scripts as a string.
+    Ideally the data was retrieved by __get_transaction_data.
+
+    Args:
+        data_source: String which is either a transaction hash or the path to a .txt file
+        max_value: Allows to set a threshold for the value of each transaction that will be included.
+
+    Returns:
+        All concatenated out scripts that belong to an AtomSea & EMBII dataset.
+
+    """
+
+    if util.is_transaction(data_source):
+        data = __get_transaction_data(data_source, max_value)
+    elif data_source.endswith('.txt'):
+        data = __get_txt_data(data_source)
+    else:
+        raise ValueError('Input has to be a valid transaction hash or link to a data .txt file.')
+
+    return data
+
+
+def download_file(data_source: str, file_name: str, max_value: float = float('inf')) -> None:
     """Function to download and decode files that were uploaded via AtomSea & EMBII.
     The result will be written to file
 
     Args:
-        tx_hash: root transaction hash
+        data_source: root transaction hash or link to .txt file with data.
         file_name: filename under which the result will be saved. The correct extension will be added automatically.
         max_value: Allows to set a threshold for the value of each transaction that will be included.
         Typically, scripts of interest are in transactions with low value.
 
     """
 
-    data = __get_data(tx_hash, max_value)
+    data = __load_data(data_source, max_value)
+
     markers = util.find_markers(data)
 
     n = 0
@@ -140,7 +179,7 @@ def download_data(tx_hash: str, file_name: str, max_value: float = float('inf'))
     if not file_name.endswith('.txt'):
         file_name = __add_extension(file_name, 'txt')
 
-    scripts = __get_data(tx_hash, max_value)
+    scripts = __get_transaction_data(tx_hash, max_value)
     util.write_to_txt(scripts, file_name)
 
 
