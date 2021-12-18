@@ -47,8 +47,16 @@ def test_extract_data():
     assert actual == expected
 
 
+@pytest.mark.parametrize("expected, base, extension",
+                         [('no_extension_here.txt', 'no_extension_here', 'txt'),
+                          ('no_extension_here.txt', 'no_extension_here.', 'txt')])
+def test_add_extension(expected, base, extension):
+
+    assert apertus.__add_extension(base, extension) == expected
+
+
 @pytest.mark.parametrize("tx_hash, expected", tx_tests)
-def test_download_image(tmp_path, tx_hash, expected):
+def test_download_file(tmp_path, tx_hash, expected):
 
     file_name = str(tmp_path)
     apertus.download_file(tx_hash, file_name=file_name, max_value=5500)

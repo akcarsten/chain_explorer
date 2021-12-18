@@ -63,7 +63,7 @@ def __add_extension(file_name: str, file_extension: str) -> str:
 
      """
 
-    return f'{file_name}.{file_extension}'
+    return f"{file_name.strip('.')}.{file_extension}"
 
 
 def __get_transaction_data(tx_hash: str, max_value: float = float('inf')) -> str:
