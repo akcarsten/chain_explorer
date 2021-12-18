@@ -247,7 +247,7 @@ def collect_out_scripts(raw_tx: dict, max_value: float = float('inf')) -> list:
     Args:
         raw_tx: transaction hash of interest that contains the data
         max_value: Allows to set a threshold for the value of each transaction that will be included.
-        Typically scripts of interest are in transactions with low value.
+        Typically, scripts of interest are in transactions with low value.
 
     Returns:
         A list with all the scripts from the transactions.
