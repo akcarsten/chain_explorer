@@ -287,7 +287,8 @@ def collect_multi_out_scripts(tx_list: list, max_value: float = float('inf')) ->
         print(f'Fetching scripts from transaction: {transaction}')
 
         raw_tx = get_transaction(str(transaction))
-        scripts = scripts + collect_out_scripts(raw_tx, max_value=max_value)
+        if 'error' not in raw_tx:
+            scripts = scripts + collect_out_scripts(raw_tx, max_value=max_value)
 
         time.sleep(1)
 
