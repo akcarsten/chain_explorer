@@ -11,6 +11,8 @@ from blockexplorer import explorer as exp
 from blockexplorer import util
 
 # TEXT DECODING NEEDS TO BE IMPLEMENTED
+# SPEND ARGUMENT IN "exp.collect_out_scripts" NOT REACHABLE HERE
+# -> RESTRUCTURE TO CLASS TO DEFINE "max_value" AND "spent" AS PROPERTIES
 
 
 def __extract_transactions(out_scripts: str) -> list:
