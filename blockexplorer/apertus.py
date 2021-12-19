@@ -201,6 +201,11 @@ def download_file(data_source: str, file_name: str, max_value: float = float('in
             continue
 
         for i_file, file_start in enumerate(start_of_file):
+
+            # In case start marker has no corresponding end point
+            if len(end_of_file) < i_file + 1:
+                continue
+
             image = __extract_data(data, file_start, end_of_file[i_file])
 
             current_file_name = f'{file_name}_{n_file}'
