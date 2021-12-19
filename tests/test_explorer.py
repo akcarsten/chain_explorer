@@ -130,9 +130,18 @@ def test_collect_out_scripts():
 
     raw_tx = {'out': [
         {'script': '76a9140a6137396432363833636631313261303931363588ac',
-         'value': 5500},
+         'value': 5500,
+         'spent': False},
         {'script': '76a914326664613738636638313431643532376435636388ac',
-         'value': 1000}]}
+         'value': 1000,
+         'spent': False},
+        {'script': '76a914326664613738636638313431643532376435636388ac',
+         'value': 1000,
+         'spent': True},
+        {'script': '76a914326664613738636638313431643532376435636388ac',
+         'value': 8000,
+         'spent': True}
+    ]}
 
     actual = exp.collect_out_scripts(raw_tx)
 

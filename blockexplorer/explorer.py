@@ -241,23 +241,25 @@ def download_data(tx_hash: str, file_name: str) -> None:
     util.write_binary_to_file(decoded_data, file_name)
 
 
-def collect_out_scripts(raw_tx: dict, max_value: float = float('inf')) -> list:
-    """Function to collect all the scripts from a transaction.
+def collect_out_scripts(raw_tx: dict, max_value: float = float('inf'), spent: bool = False) -> list:
+    """Function to collect all the scripts from a transaction. By default, all transactions will be collected
+    independent of their value. Also, all spent transactions will be skipped in the collection process.
 
     Args:
         raw_tx: transaction hash of interest that contains the data
         max_value: Allows to set a threshold for the value of each transaction that will be included.
         Typically, scripts of interest are in transactions with low value.
+        spent: Boolean to select only spent or unspent transactions.
 
     Returns:
-        A list with all the scripts from the transactions.
+        A list with all the scripts from the transactions that fulfill the specified criteria of max_value and spent.
         Note the first 6 and the last 4 bytes are removed in the output.
 
     """
 
     scripts = []
     for single_tx in raw_tx['out']:
-        if single_tx['value'] <= max_value:
+        if single_tx['value'] <= max_value and single_tx['spent'] is spent:
             scripts.append(single_tx['script'][6:-4])
 
     return scripts
