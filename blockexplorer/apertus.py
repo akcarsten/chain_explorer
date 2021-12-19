@@ -68,6 +68,49 @@ def __add_extension(file_name: str, file_extension: str) -> str:
     return f"{file_name.strip('.')}.{file_extension}"
 
 
+def __get_out_scripts(tx_hash: str, max_value: float = float('inf')) -> str:
+    """Function to collect all out scripts and concatenate them as a string.
+
+    Args:
+        tx_hash: root transaction hash
+        max_value: Allows to set a threshold for the value of each transaction that will be included.
+
+    Returns:
+        All relevant transaction out scripts as one concatenated string.
+
+    """
+
+    raw_tx = exp.get_transaction(tx_hash)
+    out_scripts = exp.collect_out_scripts(raw_tx, max_value=max_value)
+
+    return ''.join(out_scripts)
+
+
+def __append_transaction_list(out_scripts: str, tx_list: list,  max_value: float = float('inf')):
+    """Function to add additional transaction data. This may be necessary if signed transactions refer to
+    older non-signed uploads. In the current version the pattern 'SIG\\' is used to identify such a potential link.
+
+    Args:
+        out_scripts:
+        tx_list:
+        max_value: Allows to set a threshold for the value of each transaction that will be included.
+
+    Returns:
+        Original transaction list appended with additional transactions of relevance that were found.
+
+    """
+
+    decoded_scripts = exp.decode_hex_message(out_scripts)[0]
+    if decoded_scripts.find(b'SIG\\') != -1:
+        idx = decoded_scripts.find(b'LNK') + 28
+        tx_hash = decoded_scripts[idx:idx + 64].decode("utf-8")
+
+        out_scripts = __get_out_scripts(tx_hash, max_value)
+        tx_list.extend(__extract_transactions(out_scripts))
+
+    return tx_list
+
+
 def __get_transaction_data(tx_hash: str, max_value: float = float('inf')) -> str:
     """Function to download all data from a AtomSea & EMBII upload.
     No interpretation of the data is performed only the collected out scripts are returned as a string.
@@ -82,12 +125,10 @@ def __get_transaction_data(tx_hash: str, max_value: float = float('inf')) -> str
 
     """
 
-    raw_tx = exp.get_transaction(tx_hash)
-
-    out_scripts = exp.collect_out_scripts(raw_tx, max_value=max_value)
-    out_scripts = ''.join(out_scripts)
+    out_scripts = __get_out_scripts(tx_hash, max_value)
 
     tx_list = __extract_transactions(out_scripts)
+    tx_list = __append_transaction_list(out_scripts, tx_list,  max_value=max_value)
 
     scripts = exp.collect_multi_out_scripts(tx_list, max_value=max_value)
 
@@ -151,10 +192,13 @@ def download_file(data_source: str, file_name: str, max_value: float = float('in
     n_file = 0
     for item in markers.items():
 
-        if len(item[1][0]) == 0 and len(item[1][1]) == 0:
+        if not item[1][0] and not item[1][1]:
             continue
 
         start_of_file, end_of_file = util.match_markers(item[1])
+
+        if not end_of_file:
+            continue
 
         for i_file, file_start in enumerate(start_of_file):
             image = __extract_data(data, file_start, end_of_file[i_file])
