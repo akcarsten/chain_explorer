@@ -66,5 +66,7 @@ def test_download_file(tmp_path, tx_hash, expected_jpg, expected_txt):
             data = file.read()
 
         actual = hashlib.sha256(data).digest()
+        print(f'actual {test_type[0]}: {actual}')
+        print(f'expected {test_type[0]}: {test_type[1]}')
 
         assert actual == test_type[1]
