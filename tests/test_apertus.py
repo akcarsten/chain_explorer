@@ -5,7 +5,8 @@ from blockexplorer import apertus
 
 tx_tests = [
     ('78f0e6de0ce007f4dd4a09085e649d7e354f70bc7da06d697b167f353f115b8e',
-     b'\xa4r\x99\xedmCz\xd2@d+\x85\xae\xcd\xfdt\x02I\x9ef2\xa8f\xb3!\xdf\xf0\x1f\x1e\xde\x157'),
+     b'\xa4r\x99\xedmCz\xd2@d+\x85\xae\xcd\xfdt\x02I\x9ef2\xa8f\xb3!\xdf\xf0\x1f\x1e\xde\x157',
+     b'\x08gA\xb6\xbdZ\xca\x13\xb8\xd4OT\xdd\xe2#\x80\x80\x96\xb6\x84}\xe6<q\xfeo\xeaw\xd7\x06\xea\xba')
 ]
 
 
@@ -47,15 +48,23 @@ def test_extract_data():
     assert actual == expected
 
 
-@pytest.mark.parametrize("tx_hash, expected", tx_tests)
-def test_download_file(tmp_path, tx_hash, expected):
+@pytest.mark.parametrize("tx_hash, expected_jpg, expected_txt", tx_tests)
+def test_download_file(tmp_path, tx_hash, expected_jpg, expected_txt):
 
     file_name = str(tmp_path) + '/test_download'
+
+    expected_results = [
+        (f'{file_name}_0.jpg', expected_jpg),
+        (f'{file_name}.txt', expected_txt)
+         ]
+
     apertus.download_file(tx_hash, file_name=file_name, max_value=5500)
 
-    with open(f'{file_name}_0.jpg', 'rb') as image_file:
-        data = image_file.read()
+    for test_type in expected_results:
 
-    actual = hashlib.sha256(data).digest()
+        with open(test_type[0], 'rb') as file:
+            data = file.read()
 
-    assert actual == expected
+        actual = hashlib.sha256(data).digest()
+
+        assert actual == test_type[1]
