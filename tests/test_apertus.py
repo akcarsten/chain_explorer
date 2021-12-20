@@ -58,7 +58,7 @@ def test_add_extension(expected, base, extension):
 @pytest.mark.parametrize("tx_hash, expected", tx_tests)
 def test_download_file(tmp_path, tx_hash, expected):
 
-    file_name = str(tmp_path)
+    file_name = str(tmp_path) + '/test_download'
     apertus.download_file(tx_hash, file_name=file_name, max_value=5500)
 
     with open(f'{file_name}_0.jpg', 'rb') as image_file:

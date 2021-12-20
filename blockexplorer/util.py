@@ -8,6 +8,7 @@ The Util module offers convenience functions to work motr efficiently with Block
 import re
 import os
 from typing import Tuple
+from blockexplorer import apertus
 
 
 def write_binary_to_file(data: bytes, file_name: str) -> None:
@@ -35,6 +36,9 @@ def write_to_txt(data: str, file_name: str) -> None:
     """
 
     assert isinstance(data, str), f'input must be of type str not: {type(data)}'
+
+    if not file_name.endswith('.txt'):
+        file_name = apertus.__add_extension(file_name, 'txt')
 
     with open(file_name, "w+", encoding="utf-8") as file:
         file.write(data)
