@@ -70,3 +70,12 @@ def test_write_to_txt():
 def test_is_transaction(expected, string):
 
     assert util.is_transaction(string) is expected
+
+
+@pytest.mark.parametrize("expected, base, extension",
+                         [('no_extension_here.txt', 'no_extension_here', 'txt'),
+                          ('no_extension_here.txt', 'no_extension_here.', 'txt')])
+def test_add_extension(expected, base, extension):
+
+    assert util.add_extension(base, extension) == expected
+

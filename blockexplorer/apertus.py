@@ -55,20 +55,6 @@ def __extract_data(scripts: str, header_index: int, footer_index: int) -> bytes:
     return exp.decode_hex_message(image)[0]
 
 
-def __add_extension(file_name: str, file_extension: str) -> str:
-    """Function to add an extension to a file name
-
-     Args:
-         file_name: String with the target file name lacking the extension (e.g. .txt)
-
-    Returns:
-        File name with correct extension.
-
-     """
-
-    return f"{file_name.strip('.')}.{file_extension}"
-
-
 def __get_out_scripts(tx_hash: str, max_value: float = float('inf')) -> str:
     """Function to collect all out scripts and concatenate them as a string.
 
@@ -238,7 +224,7 @@ def download_file(data_source: str, file_name: str, max_value: float = float('in
             image = __extract_data(data, file_start, end_of_file[i_file])
 
             current_file_name = f'{file_name}_{n_file}'
-            current_file_name = __add_extension(current_file_name, item[0])
+            current_file_name = util.add_extension(current_file_name, item[0])
 
             util.write_binary_to_file(image, current_file_name)
 
@@ -258,7 +244,7 @@ def download_data(tx_hash: str, file_name: str, max_value: float = float('inf'))
     """
 
     if not file_name.endswith('.txt'):
-        file_name = __add_extension(file_name, 'txt')
+        file_name = util.add_extension(file_name, 'txt')
 
     scripts = __get_transaction_data(tx_hash, max_value)
     util.write_to_txt(scripts, file_name)
