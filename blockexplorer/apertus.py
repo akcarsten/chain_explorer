@@ -7,6 +7,7 @@ via the AtomSea & EMBII tool.'
 """
 
 import os
+import re
 from blockexplorer import explorer as exp
 from blockexplorer import util
 
@@ -167,14 +168,40 @@ def __load_data(data_source: str, max_value: float = float('inf')) -> str:
         data = __get_transaction_data(data_source, max_value)
     elif data_source.endswith('.txt'):
         data = __get_txt_data(data_source)
+    elif isinstance(data_source, str):
+        data = data_source
     else:
         raise ValueError('Input has to be a valid transaction hash or link to a data .txt file.')
 
     return data
 
 
+def download_txt_message(data_source: str, file_name: str, max_value: float = float('inf')) -> None:
+    """Function to decode and download text messages that were uploaded with Apertus.
+
+    Args:
+        data_source: root transaction hash or link to .txt file with data.
+        file_name: filename under which the result will be saved. The correct extension will be added automatically.
+        max_value: Allows to set a threshold for the value of each transaction that will be included.
+        Typically, scripts of interest are in transactions with low value.
+
+    Returns:
+
+    """
+
+    data = __load_data(data_source, max_value)
+    decoded_data = exp.decode_hex_message(data)[0].decode('utf-8', errors='ignore')
+
+    first_number = re.findall(r'\d+', decoded_data)[0]
+
+    txt_start = decoded_data.find(first_number) + len(first_number)
+    txt_message = decoded_data[txt_start:int(first_number) + 1]
+
+    util.write_to_txt(txt_message, file_name)
+
+
 def download_file(data_source: str, file_name: str, max_value: float = float('inf')) -> None:
-    """Function to download and decode files that were uploaded via AtomSea & EMBII.
+    """Function to download and decode files that were uploaded via Apertus.
     The result will be written to file
 
     Args:
@@ -186,6 +213,8 @@ def download_file(data_source: str, file_name: str, max_value: float = float('in
     """
 
     data = __load_data(data_source, max_value)
+
+    download_txt_message(data, file_name, max_value=5500)
 
     markers = util.find_markers(data)
 
