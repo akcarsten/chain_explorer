@@ -79,7 +79,8 @@ def find_markers(data: str) -> dict:
         'png': ['89504e470d', '44ae426082'],
         'jpg': ['ffd8', 'ffd9'],
         'gif': ['4749463839614E015300C4', '2100003B00'],
-        'zip': ['504B030414', '504B050600']
+        'zip': ['504B030414', '504B050600'],
+        'mp3': ['494433', '494433']
     }
 
     markers = {}
@@ -91,6 +92,10 @@ def find_markers(data: str) -> dict:
         try:
             header_index = [sof.start() for sof in re.finditer(header_marker, data)]
             footer_index = [eof.start() + len(footer_marker) for eof in re.finditer(footer_marker, data)]
+
+            if footer_index[0] - header_index[-1] == len(header_marker):
+                footer_index = [len(data)]
+
         except IndexError:
             header_index = []
             footer_index = []
