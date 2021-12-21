@@ -36,12 +36,12 @@ def __extract_transactions(out_scripts: str) -> list:
     return formatted_scripts[:-1]
 
 
-def __extract_data(scripts: str, header_index: int, footer_index: int) -> bytes:
+def __extract_data(out_scripts: str, header_index: int, footer_index: int) -> bytes:
     """Function to extract the data from a hex string.
     The result is decoded to bytes and can be directly written to file
 
     Args:
-        scripts: Hex string that contains data in form of a known file type (e.g. .jpg or .png)
+        out_scripts: Hex string that contains data in form of a known file type (e.g. .jpg or .png)
         header_index: Start of the data
         footer_index: End of the data
 
@@ -50,7 +50,7 @@ def __extract_data(scripts: str, header_index: int, footer_index: int) -> bytes:
 
     """
 
-    image = scripts[header_index:footer_index]
+    image = out_scripts[header_index:footer_index]
 
     return exp.decode_hex_message(image)[0]
 
