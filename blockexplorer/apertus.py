@@ -102,10 +102,9 @@ def __append_transaction_list(out_scripts: str, tx_list: list,  max_value: float
     if decoded_scripts.find('SIG\\') != -1:
         idx = decoded_scripts.find('LNK') + 28
         tx_hash = decoded_scripts[idx:idx + 64]
-    elif decoded_scripts[64] == '>':
-        end_point = decoded_scripts.find('<', 64)
+    elif decoded_scripts[64] in ['>', '\\']:
+        msg_length = re.findall(r'\d+', decoded_scripts[64:])[0]
 
-        msg_length = decoded_scripts[65:end_point]
         num_digits = len(msg_length)
         msg_length = int(msg_length)
 
@@ -244,12 +243,12 @@ def download_file(data_source: str, file_name: str, max_value: float = float('in
             if len(end_of_file) < i_file + 1:
                 continue
 
-            image = __extract_data(data, file_start, end_of_file[i_file])
+            file = __extract_data(data, file_start, end_of_file[i_file])
 
             current_file_name = f'{file_name}_{n_file}'
             current_file_name = util.add_extension(current_file_name, item[0])
 
-            util.write_binary_to_file(image, current_file_name)
+            util.write_binary_to_file(file, current_file_name)
 
             n_file += 1
 
