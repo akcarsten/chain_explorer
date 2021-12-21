@@ -8,6 +8,7 @@ via the AtomSea & EMBII tool.'
 
 import os
 import re
+from typing import Union
 from blockexplorer import explorer as exp
 from blockexplorer import util
 
@@ -16,24 +17,35 @@ from blockexplorer import util
 # -> RESTRUCTURE TO CLASS TO DEFINE "max_value" AND "spent" AS PROPERTIES
 
 
-def __extract_transactions(out_scripts: str) -> list:
+def __extract_transactions(out_scripts: str, decode: bool = True) -> list:
     """Function to extract transaction hashes from a string.
     The string is expected to come from the AtomSea & EMBII encoding.
 
     Args:
-        out_scripts: Concatenated string from all output scripts in the root transaction.
+        out_scripts: Concatenated string of all output scripts in the root transaction either in Hex encoding or UTF-8.
+        decode: Boolean to choose if input should first be converted to utf-8.
 
     Returns:
         List of all transactions belonging to the uploaded data set.
 
     """
 
-    binary_scripts = exp.decode_hex_message(out_scripts)[0]
-    utf8_scripts = binary_scripts.decode('utf-8', errors='ignore')
+    if not out_scripts:
+        return []
+
+    if decode:
+        binary_scripts = exp.decode_hex_message(out_scripts)[0]
+        utf8_scripts = binary_scripts.decode('utf-8', errors='ignore')
+    else:
+        utf8_scripts = out_scripts
+
     formatted_scripts = utf8_scripts.split('\r\n')
     formatted_scripts[0] = formatted_scripts[0][:64]
 
-    return formatted_scripts[:-1]
+    if len(formatted_scripts) > 1:
+        formatted_scripts = formatted_scripts[:-1]
+
+    return formatted_scripts
 
 
 def __extract_data(out_scripts: str, header_index: int, footer_index: int) -> bytes:
@@ -55,7 +67,7 @@ def __extract_data(out_scripts: str, header_index: int, footer_index: int) -> by
     return exp.decode_hex_message(image)[0]
 
 
-def __get_out_scripts(tx_hash: str, max_value: float = float('inf')) -> str:
+def __get_out_scripts(tx_hash: Union[list, str], max_value: float = float('inf')) -> str:
     """Function to collect all out scripts and concatenate them as a string.
 
     Args:
@@ -67,8 +79,7 @@ def __get_out_scripts(tx_hash: str, max_value: float = float('inf')) -> str:
 
     """
 
-    raw_tx = exp.get_transaction(tx_hash)
-    out_scripts = exp.collect_out_scripts(raw_tx, max_value=max_value)
+    out_scripts = exp.collect_multi_out_scripts(tx_hash, max_value=max_value)
 
     return ''.join(out_scripts)
 
@@ -87,13 +98,25 @@ def __append_transaction_list(out_scripts: str, tx_list: list,  max_value: float
 
     """
 
-    decoded_scripts = exp.decode_hex_message(out_scripts)[0]
-    if decoded_scripts.find(b'SIG\\') != -1:
-        idx = decoded_scripts.find(b'LNK') + 28
-        tx_hash = decoded_scripts[idx:idx + 64].decode("utf-8")
+    decoded_scripts = exp.decode_hex_message(out_scripts)[0].decode('utf-8')
+    if decoded_scripts.find('SIG\\') != -1:
+        idx = decoded_scripts.find('LNK') + 28
+        tx_hash = decoded_scripts[idx:idx + 64]
+    elif decoded_scripts[64] == '>':
+        end_point = decoded_scripts.find('<', 64)
 
-        out_scripts = __get_out_scripts(tx_hash, max_value)
-        tx_list.extend(__extract_transactions(out_scripts))
+        msg_length = decoded_scripts[65:end_point]
+        num_digits = len(msg_length)
+        msg_length = int(msg_length)
+
+        idx = 66 + num_digits
+        tx_hash = decoded_scripts[idx:idx + msg_length]
+    else:
+        tx_hash = []
+
+    tx_hash = __extract_transactions(tx_hash, decode=False)
+    out_scripts = __get_out_scripts(tx_hash, max_value)
+    tx_list.extend(__extract_transactions(out_scripts))
 
     return tx_list
 
