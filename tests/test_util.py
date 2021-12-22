@@ -82,3 +82,11 @@ def test_add_extension(expected, base, extension):
 
     assert util.add_extension(base, extension) == expected
 
+
+@pytest.mark.parametrize("expected, test_string",
+                         [(True, '89ABCDEFGHJKLMNPQ12345'),
+                          (False, 'not base58 sorry.')])
+def test_is_base58(expected, test_string):
+
+    assert util.is_base58(test_string) == expected
+
