@@ -129,6 +129,10 @@ dmypy.json
 *.gif
 *.bmp
 
+# Development files
+test*.*
+
 # Data folders
 /atomsea
 /background
+/visualization
