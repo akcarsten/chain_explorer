@@ -93,7 +93,7 @@ def find_markers(data: str) -> dict:
             header_index = [sof.start() for sof in re.finditer(header_marker, data)]
             footer_index = [eof.start() + len(footer_marker) for eof in re.finditer(footer_marker, data)]
 
-            if footer_index[0] - header_index[-1] == len(header_marker):
+            if footer_index and header_index and footer_index[0] - header_index[-1] == len(header_marker):
                 footer_index = [len(data)]
 
         except IndexError:

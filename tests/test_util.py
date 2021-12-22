@@ -4,23 +4,26 @@ import blockexplorer.util as util
 
 
 jpg_strings_new = [
-    ({'png': [[], []], 'jpg': [[20], [72]], 'gif': [[], []], 'zip': [[], []]},
+    ({'png': [[], []], 'jpg': [[20], [72]], 'gif': [[], []], 'zip': [[], []], 'mp3': [[], []]},
      'sometextofnointerestffd8ffe000104a4649460001thisshouldnotbedetected0ffd9thisisalsonotrelevant'),
 
-    ({'png': [[11], [55]], 'jpg': [[], []], 'gif': [[], []], 'zip': [[], []]},
+    ({'png': [[11], [55]], 'jpg': [[], []], 'gif': [[], []], 'zip': [[], []], 'mp3': [[], []]},
      'howaboutpng89504e470dthisshould0notbedetected44ae426082thisisalsonotrelevant'),
 
-    ({'png': [[], []], 'jpg': [[], []], 'gif': [[], []], 'zip': [[], []]},
+    ({'png': [[], []], 'jpg': [[], []], 'gif': [[], []], 'zip': [[], []], 'mp3': [[], []]},
      'there_is_no_image_in_here'),
 
-    ({'png': [[], []], 'jpg': [[13], []], 'gif': [[], []], 'zip': [[], []]},
+    ({'png': [[], []], 'jpg': [[13], []], 'gif': [[], []], 'zip': [[], []], 'mp3': [[], []]},
      'onlyTheHeaderffd8'),
 
-    ({'png': [[], []], 'jpg': [[], [17]], 'gif': [[], []], 'zip': [[], []]},
+    ({'png': [[], []], 'jpg': [[], [17]], 'gif': [[], []], 'zip': [[], []], 'mp3': [[], []]},
      'onlyTheFooterffd9'),
 
-    ({'png': [[], [66]], 'jpg': [[0], [52]], 'gif': [[], []], 'zip': [[], []]},
-     'ffd8ffe000104a4649460001MIXED89504e470JPGand0PNGffd9OHno44ae426082')
+    ({'png': [[], [66]], 'jpg': [[0], [52]], 'gif': [[], []], 'zip': [[], []], 'mp3': [[], []]},
+     'ffd8ffe000104a4649460001MIXED89504e470JPGand0PNGffd9OHno44ae426082'),
+
+    ({'png': [[], []], 'jpg': [[], []], 'gif': [[], []], 'zip': [[], []], 'mp3': [[14, 43], [20, 49]]},
+     'justNumbersAnd494433toMarkAnMp3HereIsTheEnd494433orNot')
 ]
 
 test_folders = [
