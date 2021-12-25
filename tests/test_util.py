@@ -90,3 +90,11 @@ def test_is_base58(expected, test_string):
 
     assert util.is_base58(test_string) == expected
 
+
+@pytest.mark.parametrize("expected, test_string",
+                         [(True, '89ABCDEFab'),
+                          (False, 'not SHA256 sorry.')])
+def test_is_sha256(expected, test_string):
+
+    assert util.is_sha256(test_string) == expected
+

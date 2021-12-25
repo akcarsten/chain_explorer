@@ -153,7 +153,7 @@ def is_transaction(transaction: str) -> bool:
         Result if input string represents a valid transaction hash or not
     """
 
-    return len(transaction) == 64 and isinstance(transaction, str) and is_base58(transaction)
+    return len(transaction) == 64 and isinstance(transaction, str) and is_sha256(transaction)
 
 
 def add_extension(file_name: str, file_extension: str) -> str:
@@ -172,10 +172,10 @@ def add_extension(file_name: str, file_extension: str) -> str:
 
 
 def is_base58(test_string: str) -> bool:
-    """Function to check if a string is following the base58 conventio0n or not.
+    """Function to check if a string is following the base58 convention or not.
 
     Args:
-        test_string: String that will be tested if it is base58.txt
+        test_string: String that will be tested if it is base58.
 
     Returns:
         True if all characters in the string are base58 and False otherwise.
@@ -185,3 +185,17 @@ def is_base58(test_string: str) -> bool:
 
     return all([x in base58_characters for x in test_string])
 
+
+def is_sha256(test_string: str) -> bool:
+    """Function to check if a string is a SHA256 hash.
+
+    Args:
+        test_string: String that will be tested if it is SHA256
+
+    Returns:
+        True if all characters in the string are SHA256 and False otherwise.
+
+    """
+    sha256_characters = '0123456789ABCDEFabcdef'
+
+    return all([x in sha256_characters for x in test_string])
