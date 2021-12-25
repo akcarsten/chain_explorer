@@ -11,6 +11,7 @@ from typing import Union
 import codecs
 import time
 import requests
+import warnings
 from blockexplorer import util
 
 
@@ -80,13 +81,19 @@ def get_transaction(tx_hash: str) -> dict:
         tx_hash: transaction hash of interest
 
     Returns:
-        dict: raw transaction data
+        dict: raw transaction data. iF the input is not a valid transaction hash an empty list is returned.
 
     """
 
     url = 'https://blockchain.info/rawtx/'
 
-    return requests.get(url + tx_hash).json()
+    raw_data = []
+    if util.is_transaction(tx_hash):
+        raw_data = requests.get(url + tx_hash).json()
+    else:
+        warnings.warn('Input is not a valid transaction hash.')
+
+    return raw_data
 
 
 def get_multi_address(address: str) -> dict:

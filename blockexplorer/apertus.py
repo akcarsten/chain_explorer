@@ -40,10 +40,13 @@ def __extract_transactions(out_scripts: str, decode: bool = True) -> list:
     else:
         utf8_scripts = out_scripts
 
-    formatted_scripts = utf8_scripts.split('\r\n')
-    formatted_scripts[0] = formatted_scripts[0][:64]
+    formatted_scripts = re.split('[\r\n/]', utf8_scripts)
+    formatted_scripts = list(filter(lambda x: (len(x) >= 64 and not None), formatted_scripts))
+    formatted_scripts = [x[:64] for x in formatted_scripts]
+    formatted_scripts = list(dict.fromkeys(formatted_scripts))
+    formatted_scripts = list(filter(lambda x: util.is_transaction(x), formatted_scripts))
 
-    if len(formatted_scripts) > 1:
+    if len(formatted_scripts) > 1 and not util.is_transaction(formatted_scripts[-1]):
         formatted_scripts = formatted_scripts[:-1]
 
     return formatted_scripts
@@ -202,7 +205,6 @@ def download_txt_message(data_source: str, file_name: str, max_value: float = fl
     decoded_data = exp.decode_hex_message(data)[0].decode('utf-8', errors='ignore')
 
     first_number = re.findall(r'\d+', decoded_data)[0]
-
     txt_start = decoded_data.find(first_number) + len(first_number)
     txt_message = decoded_data[txt_start:int(first_number) + 1]
 
