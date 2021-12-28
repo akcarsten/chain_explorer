@@ -20,7 +20,7 @@ from blockexplorer import util
 
 def __extract_transactions(out_scripts: str, decode: bool = True) -> list:
     """Function to extract transaction hashes from a string.
-    The string is expected to come from the AtomSea & EMBII encoding.
+    The string is expected to come from the Apertus encoding.
 
     Args:
         out_scripts: Concatenated string of all output scripts in the root transaction either in Hex encoding or UTF-8.
@@ -43,7 +43,6 @@ def __extract_transactions(out_scripts: str, decode: bool = True) -> list:
     formatted_scripts = re.split('[\r\n/]', utf8_scripts)
     formatted_scripts = list(filter(lambda x: (len(x) >= 64 and not None), formatted_scripts))
     formatted_scripts = [x[:64] for x in formatted_scripts]
-    formatted_scripts = list(dict.fromkeys(formatted_scripts))
     formatted_scripts = list(filter(lambda x: util.is_transaction(x), formatted_scripts))
 
     if len(formatted_scripts) > 1 and not util.is_transaction(formatted_scripts[-1]):
