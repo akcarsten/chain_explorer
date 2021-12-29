@@ -96,8 +96,12 @@ def __extract_transactions_from_out_scripts(out_scripts: str, max_value: float =
         print('Cannot decode out scripts. They may not contain transaction hashes.')
         return ''
 
+    # THE SIG AND LNK IMPLEMENTATION NEEDS TO BE OPTIMIZED
     if decoded_scripts.find('SIG\\') != -1:
         idx = decoded_scripts.find('LNK') + 28
+        tx_hash = decoded_scripts[idx:idx + 64]
+    elif decoded_scripts.find('LNK<') != -1:
+        idx = decoded_scripts.find('LNK') + 34
         tx_hash = decoded_scripts[idx:idx + 64]
     elif decoded_scripts[64] in ['>', '<', '\\', '|', '/', ':', '*', '?', '"']:
         msg_length = re.findall(r'\d+', decoded_scripts[64:])[0]
@@ -151,20 +155,14 @@ def __get_transaction_data(tx_hash: str, max_value: float = float('inf')) -> str
 
     out_scripts = __get_out_scripts(tx_hash, max_value)
 
-    scripts = __extract_transactions_from_out_scripts(out_scripts, max_value=max_value)
-    new_scripts = __extract_transactions_from_out_scripts(scripts, max_value=max_value)
-    scripts = scripts + new_scripts
+    data = ''
+    while out_scripts != '':
+        out_scripts = __extract_transactions_from_out_scripts(out_scripts, max_value=max_value)
+        data = data + out_scripts
 
-    '''
-    #tx_list = __extract_transactions(out_scripts)
-    tx_list = __append_transaction_list(out_scripts, tx_list,  max_value=max_value)
+    # tx_list = __append_transaction_list(out_scripts, tx_list,  max_value=max_value) # IS THIS FUNCTION STILL NEEDED?
 
-    scripts = exp.collect_multi_out_scripts(tx_list, max_value=max_value)
-
-    new_scripts = __extract_transactions_from_out_scripts("".join(scripts), max_value=max_value)
-    scripts.append(new_scripts)
-    '''
-    return ''.join(scripts)
+    return ''.join(data)
 
 
 def __get_txt_data(file_name: str) -> str:
