@@ -87,6 +87,34 @@ def __get_out_scripts(tx_hash: Union[list, str], max_value: float = float('inf')
     return ''.join(out_scripts)
 
 
+def __extract_transactions_from_out_scripts(out_scripts: str, max_value: float = float('inf')) -> str:
+    """Function to """
+
+    try:
+        decoded_scripts = exp.decode_hex_message(out_scripts)[0].decode('utf-8')
+    except UnicodeDecodeError:
+        print('Cannot decode out scripts. They may not contain transaction hashes.')
+        return ''
+
+    if decoded_scripts.find('SIG\\') != -1:
+        idx = decoded_scripts.find('LNK') + 28
+        tx_hash = decoded_scripts[idx:idx + 64]
+    elif decoded_scripts[64] in ['>', '<', '\\', '|', '/', ':', '*', '?', '"']:
+        msg_length = re.findall(r'\d+', decoded_scripts[64:])[0]
+
+        num_digits = len(msg_length)
+        msg_length = int(msg_length)
+
+        idx = 66 + num_digits
+        tx_hash = decoded_scripts[idx:idx + msg_length]
+    else:
+        tx_hash = []
+
+    tx_hash = __extract_transactions(tx_hash, decode=False)
+
+    return __get_out_scripts(tx_hash, max_value)
+
+
 def __append_transaction_list(out_scripts: str, tx_list: list,  max_value: float = float('inf')):
     """Function to add additional transaction data. This may be necessary if signed transactions refer to
     older non-signed uploads. In the current version the pattern 'SIG\\' is used to identify such a potential link.
@@ -101,23 +129,7 @@ def __append_transaction_list(out_scripts: str, tx_list: list,  max_value: float
 
     """
 
-    decoded_scripts = exp.decode_hex_message(out_scripts)[0].decode('utf-8')
-    if decoded_scripts.find('SIG\\') != -1:
-        idx = decoded_scripts.find('LNK') + 28
-        tx_hash = decoded_scripts[idx:idx + 64]
-    elif decoded_scripts[64] in ['>', '\\']:
-        msg_length = re.findall(r'\d+', decoded_scripts[64:])[0]
-
-        num_digits = len(msg_length)
-        msg_length = int(msg_length)
-
-        idx = 66 + num_digits
-        tx_hash = decoded_scripts[idx:idx + msg_length]
-    else:
-        tx_hash = []
-
-    tx_hash = __extract_transactions(tx_hash, decode=False)
-    out_scripts = __get_out_scripts(tx_hash, max_value)
+    out_scripts = __extract_transactions_from_out_scripts(out_scripts, max_value=max_value)
     tx_list.extend(__extract_transactions(out_scripts))
 
     return tx_list
@@ -139,11 +151,19 @@ def __get_transaction_data(tx_hash: str, max_value: float = float('inf')) -> str
 
     out_scripts = __get_out_scripts(tx_hash, max_value)
 
-    tx_list = __extract_transactions(out_scripts)
+    scripts = __extract_transactions_from_out_scripts(out_scripts, max_value=max_value)
+    new_scripts = __extract_transactions_from_out_scripts(scripts, max_value=max_value)
+    scripts = scripts + new_scripts
+
+    '''
+    #tx_list = __extract_transactions(out_scripts)
     tx_list = __append_transaction_list(out_scripts, tx_list,  max_value=max_value)
 
     scripts = exp.collect_multi_out_scripts(tx_list, max_value=max_value)
 
+    new_scripts = __extract_transactions_from_out_scripts("".join(scripts), max_value=max_value)
+    scripts.append(new_scripts)
+    '''
     return ''.join(scripts)
 
 
