@@ -10,8 +10,8 @@ from typing import Tuple
 from typing import Union
 import codecs
 import time
-import requests
 import warnings
+import requests
 from blockexplorer import util
 
 
