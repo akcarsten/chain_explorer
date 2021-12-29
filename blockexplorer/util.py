@@ -183,7 +183,7 @@ def is_base58(test_string: str) -> bool:
     """
     base58_characters = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 
-    return all([x in base58_characters for x in test_string])
+    return all(x in base58_characters for x in test_string)
 
 
 def is_sha256(test_string: str) -> bool:
@@ -198,4 +198,4 @@ def is_sha256(test_string: str) -> bool:
     """
     sha256_characters = '0123456789ABCDEFabcdef'
 
-    return all([x in sha256_characters for x in test_string])
+    return all(x in sha256_characters for x in test_string)
