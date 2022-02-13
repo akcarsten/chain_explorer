@@ -8,6 +8,7 @@ via the AtomSea & EMBII tool.'
 
 import os
 import re
+import imghdr
 from typing import Union
 from blockexplorer import explorer as exp
 from blockexplorer import util
@@ -119,26 +120,6 @@ def __extract_transactions_from_out_scripts(out_scripts: str, max_value: float =
     return __get_out_scripts(tx_hash, max_value)
 
 
-def __append_transaction_list(out_scripts: str, tx_list: list,  max_value: float = float('inf')):
-    """Function to add additional transaction data. This may be necessary if signed transactions refer to
-    older non-signed uploads. In the current version the pattern 'SIG\\' is used to identify such a potential link.
-
-    Args:
-        out_scripts:
-        tx_list:
-        max_value: Allows to set a threshold for the value of each transaction that will be included.
-
-    Returns:
-        Original transaction list appended with additional transactions of relevance that were found.
-
-    """
-
-    out_scripts = __extract_transactions_from_out_scripts(out_scripts, max_value=max_value)
-    tx_list.extend(__extract_transactions(out_scripts))
-
-    return tx_list
-
-
 def __get_transaction_data(tx_hash: str, max_value: float = float('inf')) -> str:
     """Function to download all data from a AtomSea & EMBII upload.
     No interpretation of the data is performed only the collected out scripts are returned as a string.
@@ -159,8 +140,6 @@ def __get_transaction_data(tx_hash: str, max_value: float = float('inf')) -> str
     while out_scripts != '':
         out_scripts = __extract_transactions_from_out_scripts(out_scripts, max_value=max_value)
         data = data + out_scripts
-
-    # tx_list = __append_transaction_list(out_scripts, tx_list,  max_value=max_value) # IS THIS FUNCTION STILL NEEDED?
 
     return ''.join(data)
 
@@ -257,7 +236,11 @@ def download_file(data_source: str, file_name: str, max_value: float = float('in
         if not end_of_file:
             continue
 
+        last_start = -1
         for i_file, file_start in enumerate(start_of_file):
+
+            if file_start == last_start:
+                continue
 
             # In case start marker has no corresponding end point
             if len(end_of_file) < i_file + 1:
@@ -270,7 +253,10 @@ def download_file(data_source: str, file_name: str, max_value: float = float('in
 
             util.write_binary_to_file(file, current_file_name)
 
-            n_file += 1
+            if item[0] in ('png', 'jpg', 'gif') and imghdr.what(current_file_name) is not None:
+                last_start = file_start
+                n_file += 1
+                continue
 
 
 def download_data(tx_hash: str, file_name: str, max_value: float = float('inf')) -> None:
