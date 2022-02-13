@@ -7,7 +7,6 @@ The Util module offers convenience functions to work motr efficiently with Block
 
 import re
 import os
-import itertools
 from itertools import product
 from typing import Tuple
 
