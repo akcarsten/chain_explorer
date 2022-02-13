@@ -7,6 +7,8 @@ The Util module offers convenience functions to work motr efficiently with Block
 
 import re
 import os
+import itertools
+from itertools import product
 from typing import Tuple
 
 
@@ -106,7 +108,7 @@ def find_markers(data: str) -> dict:
 
 
 def match_markers(markers: list) -> Tuple[list, list]:
-    """Function to validate and match file markers retrieve with find_file_markers.
+    """Function to validate and match file markers retrieved with find_file_markers.
     For example, Start of Image (SOI) or End of Image (EOI) markers can randomly occur in image
     as well as non-image data. The typical expectation is to find as many SOI markers as EOI markers.
 
@@ -118,16 +120,21 @@ def match_markers(markers: list) -> Tuple[list, list]:
 
     Args:
         markers: dictionary
+
+    Returns:
+        SOI and EOI file markers in two separate lists
+
     """
 
-    start_of_file = markers[0]
-    end_of_file = []
+    # Create all possible file start/end combinations
+    file_markers = list(product(markers[0], markers[1]))
 
-    for sof in start_of_file:
-        for eof in markers[1]:
-            if eof > sof and (eof + sof) % 2 == 0:
-                end_of_file.append(eof)
-                break
+    # Remove the invalid file start/end combinations
+    file_markers = list(filter(lambda x: (x[0] < x[1]), file_markers))
+    file_markers = list(filter(lambda x: ((x[0] + x[1]) % 2 == 0), file_markers))
+
+    start_of_file = [x[0] for x in file_markers]
+    end_of_file = [x[1] for x in file_markers]
 
     return start_of_file, end_of_file
 
