@@ -201,10 +201,10 @@ def download_txt_message(data_source: str, file_name: str, max_value: float = fl
     decoded_data = exp.decode_hex_message(data)[0].decode('utf-8', errors='ignore')
 
     patterns = [
-        '=<.*><p>',
-        '=/?.*"',
-        '>\d*/',
-        '<.*\|']
+        r'=<.*><p>',
+        r'=/?.*"',
+        r'>\d*/',
+        r'<.*\|']
 
     txt_message = []
     for pattern in patterns:
@@ -216,7 +216,7 @@ def download_txt_message(data_source: str, file_name: str, max_value: float = fl
             print(pattern)
             break
 
-    if txt_message == []:
+    if not txt_message:
         if decoded_data[:3] == 'SIG':
             first_number = decoded_data[101:119]
             txt_start = 120
