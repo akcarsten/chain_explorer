@@ -35,7 +35,7 @@ test_folders = [
 test_markers = [
     (([1], [3]), [[1], [3]]),
     (([1, 4], [3, 8]), [[1, 4], [3, 8]]),
-    (([1, 4, 9], [3, 8, 21]), [[1, 4, 9], [3, 8, 21]]),
+    (([1, 1, 4, 9], [3, 21, 8, 21]), [[1, 4, 9], [3, 8, 21]]),
     (([9], [21]), [[9], [3, 8, 21]]),
 ]
 
@@ -43,13 +43,13 @@ test_markers = [
 @pytest.mark.parametrize("expected, string", jpg_strings_new)
 def test_find_markers(expected, string):
 
-    assert expected == util.find_markers(string)
+    assert util.find_markers(string) == expected
 
 
 @pytest.mark.parametrize("expected, markers", test_markers)
 def test_match_markers(expected, markers):
 
-    assert expected == util.match_markers(markers)
+    assert util.match_markers(markers) == expected
 
 
 @pytest.mark.parametrize("test_structure", test_folders)

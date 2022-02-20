@@ -200,9 +200,31 @@ def download_txt_message(data_source: str, file_name: str, max_value: float = fl
     data = __load_data(data_source, max_value)
     decoded_data = exp.decode_hex_message(data)[0].decode('utf-8', errors='ignore')
 
-    first_number = re.findall(r'\d+', decoded_data)[0]
-    txt_start = decoded_data.find(first_number) + len(first_number)
-    txt_message = decoded_data[txt_start:int(first_number) + 1]
+    patterns = [
+        '=<.*><p>',
+        '=/?.*"',
+        '>\d*/',
+        '<.*\|']
+
+    txt_message = []
+    for pattern in patterns:
+        if re.search(pattern, decoded_data) is not None and decoded_data[0] not in ['\"', '|', '/', '\\', '>']:
+            span = re.search(pattern, decoded_data).span()
+            txt_start = span[1]
+            first_number = re.findall('\d+', re.search(pattern, decoded_data).group())[0]
+            txt_message = decoded_data[txt_start:int(first_number) + txt_start]
+            print(pattern)
+            break
+
+    if txt_message == []:
+        if decoded_data[:3] == 'SIG':
+            first_number = decoded_data[101:119]
+            txt_start = 120
+            txt_message = decoded_data[txt_start:txt_start + int(first_number) + 1]
+        else:
+            first_number = re.findall(r'\d+', decoded_data)[0]
+            txt_start = decoded_data.find(first_number) + len(first_number) + 1
+            txt_message = decoded_data[txt_start:int(first_number) + 1]
 
     util.write_to_txt(txt_message, file_name)
 
