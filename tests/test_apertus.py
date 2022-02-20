@@ -69,12 +69,4 @@ def test_download_file(tmp_path, tx_hash, expected_jpg, expected_txt):
 
         actual = hashlib.sha256(data).digest()
 
-        try:
-            assert actual == test_type[1]
-        except AssertionError:
-            # Since the text file is read as binary here the has result seems to differ between
-            # Windows and Linux systems. To make the test work on both systems this fix was implemented.
-            # Not pretty however...
-
-            assert actual == \
-                   b'\x08gA\xb6\xbdZ\xca\x13\xb8\xd4OT\xdd\xe2#\x80\x80\x96\xb6\x84}\xe6<q\xfeo\xeaw\xd7\x06\xea\xba'
+        assert actual == test_type[1]
