@@ -211,7 +211,7 @@ def download_txt_message(data_source: str, file_name: str, max_value: float = fl
         if re.search(pattern, decoded_data) is not None and decoded_data[0] not in ['\"', '|', '/', '\\', '>']:
             span = re.search(pattern, decoded_data).span()
             txt_start = span[1]
-            first_number = re.findall('\d+', re.search(pattern, decoded_data).group())[0]
+            first_number = re.findall(r'\d+', re.search(pattern, decoded_data).group())[0]
             txt_message = decoded_data[txt_start:int(first_number) + txt_start]
             print(pattern)
             break
