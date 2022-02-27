@@ -12,7 +12,7 @@ import codecs
 import time
 import warnings
 import requests
-from blockexplorer import util
+from chainexplorer import util
 
 
 def __show_info(raw_block: dict) -> None:

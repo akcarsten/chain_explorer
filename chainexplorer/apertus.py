@@ -10,8 +10,8 @@ import os
 import re
 import imghdr
 from typing import Union
-from blockexplorer import explorer as exp
-from blockexplorer import util
+from chainexplorer import explorer as exp
+from chainexplorer import util
 
 # TEXT DECODING NEEDS TO BE IMPROVED
 # MP3 DETECTION WORKS BUT RUNS TRHOUGH EVERYTHING SINCE NO END CAN BVE DEFINED -> IMPROVE MARKER MATCHING

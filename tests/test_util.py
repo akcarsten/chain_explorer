@@ -1,6 +1,6 @@
 import pytest
 import os
-import blockexplorer.util as util
+import chainexplorer.util as util
 
 
 jpg_strings_new = [

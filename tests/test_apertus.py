@@ -1,7 +1,7 @@
 import pytest
 import os
 import hashlib
-from blockexplorer import apertus
+from chainexplorer import apertus
 
 
 tx_tests = [

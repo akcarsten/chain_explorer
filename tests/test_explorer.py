@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import patch
 import hashlib
-import blockexplorer.explorer as exp
+import chainexplorer.explorer as exp
 
 
 blockinfo = [
