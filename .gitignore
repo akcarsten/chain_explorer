@@ -125,9 +125,9 @@ dmypy.json
 # image data
 *.jpg
 *.jpeg
-*.png
 *.gif
 *.bmp
+*.ai
 
 # Development files
 test*.*
@@ -136,4 +136,3 @@ test*.*
 /atomsea
 /background
 /visualization
-/images
