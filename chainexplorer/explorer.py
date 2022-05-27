@@ -136,7 +136,7 @@ def collect_messages(raw_block: dict) -> Tuple[list, list]:
 
 
 def show_block_info(raw_block: dict) -> None:
-    """Function to print information in the console.
+    """Function to print block information in the console.
 
     Args:
         raw_block: Block information as dictionary retrieved by either 'get_by_block' or 'get_by_hash'
@@ -144,6 +144,22 @@ def show_block_info(raw_block: dict) -> None:
     """
 
     __show_info(raw_block)
+
+
+def show_transactions(raw_block: dict) -> None:
+    """Function to print the transaction data from a raw block in the console.
+
+    Args:
+         raw_block: Block information as dictionary retrieved by either 'get_by_block' or 'get_by_hash'
+
+    """
+
+    for count, tx in enumerate(raw_block['tx']):
+
+        print(f'\n\nData of transaction: {count}\n')
+
+        for key in tx.keys():
+            print(key + ': ' + str(tx[key]))
 
 
 def show_transaction_info(raw_tx: dict) -> None:

@@ -104,6 +104,19 @@ def test_show_block_info(mock_print):
 
 
 @patch('builtins.print')
+def test_show_transactions(mock_print):
+
+    raw_block = exp.get_by_block(0)
+
+    raw_block['tx'][0].pop('out')
+    raw_block['tx'][0].pop('inputs')
+
+    exp.show_transactions(raw_block)
+    
+    mock_print.assert_called_with('block_height: 0')
+
+
+@patch('builtins.print')
 def test_show_transaction_info(mock_print):
 
     raw_tx = exp.get_transaction('6c53cd987119ef797d5adccd76241247988a0a5ef783572a9972e7371c5fb0cc')
