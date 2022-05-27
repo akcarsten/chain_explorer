@@ -48,7 +48,7 @@ def test_get_latest_block():
 
     latest_block = exp.get_latest_block()
 
-    assert list(latest_block.keys()) == ['height', 'hash', 'time', 'block_index', 'txIndexes']
+    assert list(latest_block.keys()).sort() == ['height', 'hash', 'time', 'block_index', 'txIndexes'].sort()
 
 
 @pytest.mark.parametrize("key, value", blockinfo)
