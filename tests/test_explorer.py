@@ -112,7 +112,7 @@ def test_show_transactions(mock_print):
     raw_block['tx'][0].pop('inputs')
 
     exp.show_transactions(raw_block)
-    
+
     mock_print.assert_called_with('block_height: 0')
 
 

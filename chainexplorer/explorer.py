@@ -97,7 +97,7 @@ def get_transaction(tx_hash: str) -> dict:
 
 
 def get_multi_address(address: str) -> dict:
-    """Function to retrieve all information about a single address
+    """Function to retrieve all information about a  or multiple addresses
 
     Args:
         address: address of interest address
