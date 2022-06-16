@@ -32,6 +32,7 @@ def write_to_txt(data: str, file_name: str) -> None:
     Args:
         data: Data to be written to .txt file.
         file_name: Output file name. For example: raw_data.txt
+        mode: mode for writing to the text file. Follows the Python syntax.
 
     """
 
@@ -40,7 +41,13 @@ def write_to_txt(data: str, file_name: str) -> None:
     if not file_name.endswith('.txt'):
         file_name = add_extension(file_name, 'txt')
 
-    with open(file_name, "w+", encoding="utf-8") as file:
+    with open(file_name, "a+", encoding="utf-8") as file:
+
+        # Check if something is already inside the file. If so start a new line.
+        file.seek(0)
+        if len(file.read(1)) == 1:
+            file.write('\n')
+        
         file.write(data)
 
 
