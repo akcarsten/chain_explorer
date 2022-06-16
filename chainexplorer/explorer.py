@@ -294,7 +294,7 @@ def collect_multi_out_scripts(tx_list: list, max_value: float = float('inf')) ->
     Args:
         tx_list: list with all transactions of interest
         max_value: Allows to set a threshold for the value of each transaction that will be included.
-        Typically scripts of interest are in transactions with low value.
+        Typically, scripts of interest are in transactions with low value.
 
     Returns:
         A list with all the scripts from the transactions.
@@ -316,3 +316,20 @@ def collect_multi_out_scripts(tx_list: list, max_value: float = float('inf')) ->
         time.sleep(1)
 
     return scripts
+
+
+def decode_coinbase_script(block_number: int) -> str:
+    """Function to convert the input script of the coinbase transaction into ASCII code.
+
+    Args:
+        block_number: block number of interest
+
+    Returns:
+        The decoded coinbase input script
+
+    """
+
+    raw_block = get_by_block(block_number)
+    in_msg, _ = collect_messages(raw_block)
+
+    return decode_hex_message(in_msg[0])[0].decode('utf8', errors="ignore")

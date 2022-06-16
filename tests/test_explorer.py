@@ -4,6 +4,13 @@ import hashlib
 import chainexplorer.explorer as exp
 
 
+def test_get_latest_block():
+
+    latest_block = exp.get_latest_block()
+
+    assert list(latest_block.keys()).sort() == ['height', 'hash', 'time', 'block_index', 'txIndexes'].sort()
+
+
 blockinfo = [
     ('hash', '000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f'),
     ('ver', 1),
@@ -21,6 +28,23 @@ blockinfo = [
     ('height', 0),
     ('weight', 1140)]
 
+
+@pytest.mark.parametrize("key, value", blockinfo)
+def test_get_by_block(key, value):
+
+    raw_block = exp.get_by_block(0)
+
+    assert raw_block[key] == value
+
+
+@pytest.mark.parametrize("key, value", blockinfo)
+def test_get_by_hash(key, value):
+
+    raw_block = exp.get_by_hash(blockinfo[0][1])
+
+    assert raw_block[key] == value
+
+
 transaction = [
     ('hash', '4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b'),
     ('ver', 1),
@@ -37,34 +61,6 @@ transaction = [
     ('block_index', 0),
     ('block_height', 0)
 ]
-
-messages = [
-    ('54686973206973206a75737420612074657374', [b'This is just a test']),
-    (['5361746f736869', '4e616b616d6f746f'], [b'Satoshi', b'Nakamoto'])
-]
-
-
-def test_get_latest_block():
-
-    latest_block = exp.get_latest_block()
-
-    assert list(latest_block.keys()).sort() == ['height', 'hash', 'time', 'block_index', 'txIndexes'].sort()
-
-
-@pytest.mark.parametrize("key, value", blockinfo)
-def test_get_by_block(key, value):
-
-    raw_block = exp.get_by_block(0)
-
-    assert raw_block[key] == value
-
-
-@pytest.mark.parametrize("key, value", blockinfo)
-def test_get_by_hash(key, value):
-
-    raw_block = exp.get_by_hash(blockinfo[0][1])
-
-    assert raw_block[key] == value
 
 
 @pytest.mark.parametrize("key, value", transaction)
@@ -123,6 +119,12 @@ def test_show_transaction_info(mock_print):
     exp.show_transaction_info(raw_tx)
 
     mock_print.assert_called_with('fee: 297401')
+
+
+messages = [
+    ('54686973206973206a75737420612074657374', [b'This is just a test']),
+    (['5361746f736869', '4e616b616d6f746f'], [b'Satoshi', b'Nakamoto'])
+]
 
 
 @pytest.mark.parametrize("key, value", messages)
@@ -196,3 +198,15 @@ def test_download_data(tmp_path):
     expected = b'\xb1gA\x91\xa8\x8e\xc5\xcd\xd73\xe4$\n\x81\x801\x05\xdcA-lg\x08\xd5:\xb9O\xc2H\xf4\xf5S'
 
     assert actual == expected
+
+
+coinbase_messages = [
+    (0, '\x04\x00\x1d\x01\x04EThe Times 03/Jan/2009 Chancellor on brink of second bailout for banks'),
+    (130635, '\x07Eligius\x021\x0e')
+]
+
+
+@pytest.mark.parametrize("block_number, decoded_message", coinbase_messages)
+def test_decode_coinbase_script(block_number, decoded_message):
+
+    assert exp.decode_coinbase_script(130635) == '\x07Eligius\x021\x0e'
