@@ -332,4 +332,4 @@ def decode_coinbase_script(block_number: int) -> str:
     raw_block = get_by_block(block_number)
     in_msg, _ = collect_messages(raw_block)
 
-    return decode_hex_message(in_msg[0])[0].decode('utf8', errors="ignore")
+    return util.byte_to_string(decode_hex_message(in_msg[0])[0])[0]

@@ -212,3 +212,26 @@ def is_sha256(test_string: str) -> bool:
     sha256_characters = '0123456789ABCDEFabcdef'
 
     return all(x in sha256_characters for x in test_string)
+
+
+def byte_to_string(byte_data: [bytes, list]) -> list:
+    """Convert byte encoded data to string
+
+    Args:
+        byte_data: Data of interest either as a single byte object or as a list of byte objects.
+
+    Returns:
+        Input byte data as string as a list.
+
+    """
+
+    if isinstance(byte_data, bytes):
+        byte_data = [byte_data]
+
+    str_data = []
+    for data in byte_data:
+
+        converted = data.decode('utf8', errors="ignore")
+        str_data.append(converted)
+
+    return str_data

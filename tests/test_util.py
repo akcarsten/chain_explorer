@@ -98,3 +98,11 @@ def test_is_sha256(expected, test_string):
 
     assert util.is_sha256(test_string) == expected
 
+
+@pytest.mark.parametrize("data, expected",
+                         [(b'byte_2_string_test', ['byte_2_string_test']),
+                          ([b'byte_2_string_test'], ['byte_2_string_test']),
+                          ([b'byte', b'2', b'string', b'test'], ['byte', '2', 'string', 'test'])])
+def test_byte_to_string(data, expected):
+
+    assert util.byte_to_string(data) == expected
