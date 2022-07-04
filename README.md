@@ -20,7 +20,7 @@ Alternatively the package can be installed by cloning the repository as follows.
 Clone the Git repository:
 
 ```
-git clone https://github.com/akcarsten/bitfinex_api.git
+git clone https://github.com/akcarsten/chain_explorer
 ```
 
 Then go to the folder to which you cloned the repository and run:

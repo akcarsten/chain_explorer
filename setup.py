@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name='chainexplorer',
-    version='0.0.1',
+    version='0.0.2',
     url='https://github.com/akcarsten/chain_explorer',
     license='MIT License',
     author='Carsten Klein',
