@@ -9,6 +9,14 @@ Or image data stored on the blockchain via the Apertus tool.
 
 # How to install?
 
+Install with pip:
+
+```
+pip install chainexplorer
+```
+
+Alternatively the package can be installed by cloning the repository as follows.
+
 Clone the Git repository:
 
 ```
